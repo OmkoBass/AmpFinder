@@ -25,7 +25,7 @@ namespace AmpFinder
         internal void Draw(Graphics g, int X, int Y)    //Maybe need more arguments here
         {
             Pen pen = new Pen(Color.Black, 5);
-            if (this.Orientation == Orientation.HORIZONTAL)
+            if (this.Orientation == Orientation.HORIZONTAL) //50x25
             {
                 g.DrawRectangle(pen, X, Y, 50, 25);
             }

@@ -23,7 +23,16 @@ namespace AmpFinder
 
         internal void Draw(Graphics g, int X, int Y)
         {
-
+            if(this.Orientation == Orientation.HORIZONTAL)
+            {
+                Image capacitor = Image.FromFile("CapacitorHorizontal.png");    //48x48
+                g.DrawImage(capacitor, X, Y);
+            }
+            else if(this.Orientation == Orientation.VERTICAL)
+            {
+                Image capacitor = Image.FromFile("CapacitorVertical.png");
+                g.DrawImage(capacitor, X, Y);
+            }
         }
 
         internal void DummyDraw(Graphics g, int X, int Y)

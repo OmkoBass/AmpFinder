@@ -14,8 +14,11 @@ namespace AmpFinder
 {
     public partial class window : Form
     {
-        List<object> Components = new List<object>();
+        List<Element> Components = new List<Element>();
         int ResistorCounter = 1;
+        int CapacitorCounter = 1;
+        int AmpGeneratorCounter = 1;
+        int VoltGeneratorCounter = 1;
 
         public window()
         {
@@ -97,6 +100,10 @@ namespace AmpFinder
             }
         }
 
+        private void ElementClickLogic(MouseEventArgs e)
+        {
+            
+        }
         private Point FixCooridnates(int X, int Y)
         {
             //if 1163, 254 => 1160 260
@@ -138,6 +145,67 @@ namespace AmpFinder
                     Components.Add(R);
                     R.Draw(g, Fixed.X, Fixed.Y);
                 }
+            }
+            else if(CapacitorToggle.Checked == true)
+            {
+                if(e.Button == MouseButtons.Left)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
+                    CapacitorCounter++;
+                    Components.Add(C);
+                    C.Draw(g, Fixed.X, Fixed.Y);
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
+                    CapacitorCounter++;
+                    Components.Add(C);
+                    C.Draw(g, Fixed.X, Fixed.Y);
+                }
+            }
+            else if(AmpGeneratorToggle.Checked == true)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                    AmpGeneratorCounter++;
+                    Components.Add(A);
+                    A.Draw(g, Fixed.X, Fixed.Y);
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                    AmpGeneratorCounter++;
+                    Components.Add(A);
+                    A.Draw(g, Fixed.X, Fixed.Y);
+                }
+            }
+            else if (VoltGeneratorToggle.Checked == true)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                    AmpGeneratorCounter++;
+                    Components.Add(V);
+                    V.Draw(g, Fixed.X, Fixed.Y);
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    Point Fixed = FixCooridnates(e.X, e.Y);
+                    VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                    VoltGeneratorCounter++;
+                    Components.Add(V);
+                    V.Draw(g, Fixed.X, Fixed.Y);
+                }
+            }
+            else if (EditToggle.Checked == true)
+            {
+                
             }
         }
     }
