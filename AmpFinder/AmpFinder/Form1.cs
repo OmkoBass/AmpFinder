@@ -22,7 +22,9 @@ namespace AmpFinder
         public window()
         {
             InitializeComponent();
-            Reset();
+
+            DrawTimer.Start();
+            DrawGrid();
         }
 
         private void ResistorToggle_CheckedChanged(object sender, EventArgs e)
@@ -156,11 +158,18 @@ namespace AmpFinder
             }
             DrawGrid();
         }
-
+        private void DrawComponents(List<Element> list)
+        {
+            using (Graphics g = CircuitDraw.CreateGraphics())
+                foreach (Element element in list)
+                {
+                    element.Draw(g, element.Coordinates.X, element.Coordinates.Y);
+                }
+        }
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             Graphics g = CircuitDraw.CreateGraphics();
-            if (IsSomethingThere(e) != null)
+            if (IsSomethingThere(e) != null && EditToggle.Checked == false)
             {
                 MessageBox.Show("There's already something there.");
             }
@@ -175,7 +184,6 @@ namespace AmpFinder
                         R.Coordinates = Fixed;
                         ResistorCounter++;  //For better naming
                         Components.Add(R);  //Adds the component to global list
-                        R.Draw(g, Fixed.X, Fixed.Y);   //Draws it
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
@@ -184,7 +192,6 @@ namespace AmpFinder
                         R.Coordinates = Fixed;
                         ResistorCounter++;
                         Components.Add(R);
-                        R.Draw(g, Fixed.X, Fixed.Y);
                     }
                 }
                 else if (CapacitorToggle.Checked == true)
@@ -196,7 +203,6 @@ namespace AmpFinder
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
                         Components.Add(C);
-                        C.Draw(g, Fixed.X, Fixed.Y);
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
@@ -205,7 +211,6 @@ namespace AmpFinder
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
                         Components.Add(C);
-                        C.Draw(g, Fixed.X, Fixed.Y);
                     }
                 }
                 else if (AmpGeneratorToggle.Checked == true)
@@ -217,7 +222,6 @@ namespace AmpFinder
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(A);
-                        A.Draw(g, Fixed.X, Fixed.Y);
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
@@ -226,7 +230,6 @@ namespace AmpFinder
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(A);
-                        A.Draw(g, Fixed.X, Fixed.Y);
                     }
                 }
                 else if (VoltGeneratorToggle.Checked == true)
@@ -238,7 +241,6 @@ namespace AmpFinder
                         V.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(V);
-                        V.Draw(g, Fixed.X, Fixed.Y);
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
@@ -247,19 +249,29 @@ namespace AmpFinder
                         V.Coordinates = Fixed;
                         VoltGeneratorCounter++;
                         Components.Add(V);
-                        V.Draw(g, Fixed.X, Fixed.Y);
                     }
                 }
                 else if (EditToggle.Checked == true)
                 {
                     if(IsSomethingThere(e) != null)
                     {
+                        Element element = IsSomethingThere(e);
+                        if(element.Type == Type.AmpGenerator)
+                        {
+                            Components.Remove(element);
+                            element.SwitchDirection();
+                            Element NewAmpGenerator = new Element(element.Type, element.Name, element.Value, element.Orientation, element.Direction);
+                            NewAmpGenerator.Coordinates = element.Coordinates;
+                            Components.Add(NewAmpGenerator);
+                        }
+                        else if(element.Type == Type.VoltGenerator)
+                        {
 
+                        }
                     }
                     else
                     {
-                        Element element = IsSomethingThere(e);
-                        element.SwitchDirection();
+
                     }
                 }
             }
@@ -268,6 +280,13 @@ namespace AmpFinder
         private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Reset();
+        }
+
+        private void DrawTimer_Tick(object sender, EventArgs e)
+        {
+            DrawComponents(Components);
+
+            Invalidate();
         }
     }
 }

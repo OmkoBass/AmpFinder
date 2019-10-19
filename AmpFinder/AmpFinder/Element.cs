@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace AmpFinder
 {
@@ -58,7 +59,7 @@ namespace AmpFinder
 
         internal void Draw(Graphics g, int X, int Y)
         {
-            switch(Type)
+            switch(this.Type)
             {
                 case Type.Resistor:
                     Pen pen = new Pen(Color.Black, 5);
@@ -107,6 +108,14 @@ namespace AmpFinder
                         g.DrawImage(VoltGenerator, X, Y);
                     }
                     break;
+            }
+        }
+
+        internal void Delete(Graphics g, int X, int Y)
+        {
+            switch(this.Type)
+            {
+
             }
         }
 
