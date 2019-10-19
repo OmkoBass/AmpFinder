@@ -171,7 +171,7 @@ namespace AmpFinder
                     if (e.Button == MouseButtons.Left)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);   //Fixes the coordinates to corespond to the grid
-                        Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
+                        Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Horizontal, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;  //For better naming
                         Components.Add(R);  //Adds the component to global list
@@ -180,7 +180,7 @@ namespace AmpFinder
                     else if (e.Button == MouseButtons.Right)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
+                        Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Vertical, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;
                         Components.Add(R);
@@ -192,7 +192,7 @@ namespace AmpFinder
                     if (e.Button == MouseButtons.Left)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
+                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Horizontal, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
                         Components.Add(C);
@@ -201,7 +201,7 @@ namespace AmpFinder
                     else if (e.Button == MouseButtons.Right)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
+                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Vertical, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
                         Components.Add(C);
@@ -213,7 +213,7 @@ namespace AmpFinder
                     if (e.Button == MouseButtons.Left)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(A);
@@ -222,7 +222,7 @@ namespace AmpFinder
                     else if (e.Button == MouseButtons.Right)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(A);
@@ -234,7 +234,7 @@ namespace AmpFinder
                     if (e.Button == MouseButtons.Left)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
                         V.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(V);
@@ -243,7 +243,7 @@ namespace AmpFinder
                     else if (e.Button == MouseButtons.Right)
                     {
                         Point Fixed = FixCooridnates(e.X, e.Y);
-                        VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
                         V.Coordinates = Fixed;
                         VoltGeneratorCounter++;
                         Components.Add(V);
@@ -258,7 +258,8 @@ namespace AmpFinder
                     }
                     else
                     {
-                        
+                        Element element = IsSomethingThere(e);
+                        element.SwitchDirection();
                     }
                 }
             }
