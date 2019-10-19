@@ -14,12 +14,17 @@ namespace AmpFinder
     class Element
     {
         internal string Name { get; set; }
-        internal double? Value { get; set; } //Nullable so we can have null be equal as unknown
+        internal double Value { get; set; }
         internal Point Coordinates { get; set; }
         internal Size Size { get; set; }
         internal Orientation Orientation { get; set; }
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
+
+        public Element()
+        {
+
+        }
 
         public Element(Type type, string name, double value, Orientation orientation, Direction direction)
         {
@@ -57,7 +62,7 @@ namespace AmpFinder
             }
         }
 
-        internal void Draw(Graphics g, int X, int Y)
+        internal void Draw(Graphics g)
         {
             switch(this.Type)
             {
@@ -65,53 +70,76 @@ namespace AmpFinder
                     Pen pen = new Pen(Color.Black, 5);
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        g.DrawRectangle(pen, X, Y, 50, 25);
+                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 50, 25);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
-                        g.DrawRectangle(pen, X, Y, 25, 50);
+                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 25, 50);
                     }
                     break;
                 case Type.Capacitor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
                         Image capacitor = Image.FromFile("CapacitorHorizontal.png");    //48x48
-                        g.DrawImage(capacitor, X, Y);
+                        g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
                         Image capacitor = Image.FromFile("CapacitorVertical.png");
-                        g.DrawImage(capacitor, X, Y);
+                        g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
                     }
                     break;
                 case Type.AmpGenerator:
                     if (this.Orientation == Orientation.Horizontal)
                     {
                         Image AmpGenerator = Image.FromFile("AmpGeneratorHorizontal.png");  //52x52
-                        g.DrawImage(AmpGenerator, X, Y);
+                        g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
                         Image AmpGenerator = Image.FromFile("AmpGeneratorVertical.png");
-                        g.DrawImage(AmpGenerator, X, Y);
+                        g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
                     }
                     break;
                 case Type.VoltGenerator:
                     if (this.Orientation == Orientation.Horizontal)
                     {
                         Image VoltGenerator = Image.FromFile("VoltGeneratorHorizontal.png");    //52x52
-                        g.DrawImage(VoltGenerator, X, Y);
+                        g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
                         Image VoltGenerator = Image.FromFile("VoltGeneratorVertical.png");
-                        g.DrawImage(VoltGenerator, X, Y);
+                        g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
                     }
                     break;
             }
         }
 
-        internal void Delete(Graphics g, int X, int Y)
+        public void DummyDraw(Graphics g)
+        {
+            switch (this.Type)
+            {
+                case Type.Resistor:
+                    Pen pen = new Pen(Color.LightGray, 5);
+                    g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 50, 25);
+                    break;
+                case Type.Capacitor:
+                    Image capacitor = Image.FromFile("CapacitorHorizontalShadow.png");
+                    g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
+                    break;
+                case Type.AmpGenerator:
+                    Image AmpGenerator = Image.FromFile("AmpGeneratorHorizontalShadow.png");
+                    g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                    break;
+                case Type.VoltGenerator:
+                    Image VoltGenerator = Image.FromFile("VoltGeneratorHorizontalShadow.png");
+                    g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
+                    break;
+            }
+        }
+
+        internal void Delete(Graphics g)
         {
             switch(this.Type)
             {

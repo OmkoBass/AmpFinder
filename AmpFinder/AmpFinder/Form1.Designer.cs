@@ -304,6 +304,7 @@
             this.Controls.Add(this.CircuitDraw);
             this.Controls.Add(this.ComponentPanel);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(914, 730);

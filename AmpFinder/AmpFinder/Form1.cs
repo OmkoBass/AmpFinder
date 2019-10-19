@@ -24,7 +24,13 @@ namespace AmpFinder
             InitializeComponent();
 
             DrawTimer.Start();
-            DrawGrid();
+            this.SetStyle(ControlStyles.UserPaint |
+              ControlStyles.AllPaintingInWmPaint |
+              ControlStyles.ResizeRedraw |
+              ControlStyles.ContainerControl |
+              ControlStyles.OptimizedDoubleBuffer |
+              ControlStyles.SupportsTransparentBackColor
+              , true);
         }
 
         private void ResistorToggle_CheckedChanged(object sender, EventArgs e)
@@ -104,23 +110,9 @@ namespace AmpFinder
             }
         }
 
-        public void DrawGrid()
-        {
-            int i;
-            Pen pen = new Pen(Color.Gray, 1);
-            using(Graphics g = CircuitDraw.CreateGraphics())
-            {
-                for (i = 0; i < this.Width; i += 20)
-                {
-                    g.DrawLine(pen, i, 0, i, this.Height);
-                    g.DrawLine(pen, 0, i, this.Width, i);
-                }
-            }
-        }
-
         private Element IsSomethingThere(MouseEventArgs e)
         {
-            Point P = FixCooridnates(e.X, e.Y);
+            Point P = FixCooridnates(e.Location);
             foreach (Element comp in Components)
             {
                 if (comp.Coordinates.X < P.X && comp.Coordinates.X + comp.Size.Width > P.X)
@@ -140,13 +132,27 @@ namespace AmpFinder
             return null;
         }
 
-        private Point FixCooridnates(int X, int Y)
+        private Point FixCooridnates(Point Point)
         {
             //if 1163, 254 => 1160 260
-            X += 20 - (X % 20);
-            Y += 20 - (Y % 20);
-            Point P = new Point(X, Y);
+            Point.X += 20 - (Point.X % 20);
+            Point.Y += 20 - (Point.Y % 20);
+            Point P = new Point(Point.X, Point.Y);
             return P;
+        }
+
+        public void DrawGrid()
+        {
+            int i;
+            Pen pen = new Pen(Color.Gray, 1);
+            using (Graphics g = CircuitDraw.CreateGraphics())
+            {
+                for (i = 0; i < this.Width; i += 20)
+                {
+                    g.DrawLine(pen, i, 0, i, this.Height);
+                    g.DrawLine(pen, 0, i, this.Width, i);
+                }
+            }
         }
 
         private void Reset()
@@ -158,14 +164,59 @@ namespace AmpFinder
             }
             DrawGrid();
         }
+
+        private void ClearGrid()
+        {
+            using (Graphics g = CircuitDraw.CreateGraphics())
+            {
+                g.Clear(Color.White);
+            }
+            DrawGrid();
+        }
+        
         private void DrawComponents(List<Element> list)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
                 foreach (Element element in list)
                 {
-                    element.Draw(g, element.Coordinates.X, element.Coordinates.Y);
+                    element.Draw(g);
                 }
         }
+
+        private void DrawShadow(Point point)
+        {
+            using (Graphics g = CircuitDraw.CreateGraphics())
+            {
+                if (ResistorToggle.Checked == true)
+                {
+                    Element element = new Element();
+                    element.Coordinates = point;
+                    element.DummyDraw(g);
+                }
+                else if(CapacitorToggle.Checked == true)
+                {
+                    Element element = new Element();
+                    element.Type = Type.Capacitor;
+                    element.Coordinates = point;
+                    element.DummyDraw(g);
+                }
+                else if(AmpGeneratorToggle.Checked == true)
+                {
+                    Element element = new Element();
+                    element.Type = Type.AmpGenerator;
+                    element.Coordinates = point;
+                    element.DummyDraw(g);
+                }
+                else if(VoltGeneratorToggle.Checked == true)
+                {
+                    Element element = new Element();
+                    element.Type = Type.VoltGenerator;
+                    element.Coordinates = point;
+                    element.DummyDraw(g);
+                }
+            }
+        }
+
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             Graphics g = CircuitDraw.CreateGraphics();
@@ -179,7 +230,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);   //Fixes the coordinates to corespond to the grid
+                        Point Fixed = FixCooridnates(e.Location);   //Fixes the coordinates to corespond to the grid
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Horizontal, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;  //For better naming
@@ -187,7 +238,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Vertical, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;
@@ -198,7 +249,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Horizontal, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
@@ -206,7 +257,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Vertical, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
@@ -217,7 +268,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
@@ -225,7 +276,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
@@ -236,7 +287,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
                         V.Coordinates = Fixed;
                         AmpGeneratorCounter++;
@@ -244,7 +295,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Point Fixed = FixCooridnates(e.Location);
                         Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
                         V.Coordinates = Fixed;
                         VoltGeneratorCounter++;
@@ -284,8 +335,9 @@ namespace AmpFinder
 
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
+            ClearGrid();
             DrawComponents(Components);
-
+            DrawShadow(FixCooridnates(CircuitDraw.PointToClient(Cursor.Position)));
             Invalidate();
         }
     }
