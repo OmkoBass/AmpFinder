@@ -15,12 +15,14 @@ namespace AmpFinder
         internal string Name { get; set; }
         internal double? Value { get; set; } //Nullable so we can have null be equal as unknown
         internal Point Coordinates { get; set; }
+        internal Size Size { get; set; }
         internal Orientation Orientation { get; set; }
-        internal Direction Direction { get; set; } //Nullable for resistors and capacitors
+        internal Direction Direction { get; set; }
 
-        internal void SetCoordinates(Point p)
+        public void SwitchDirection()
         {
-            this.Coordinates = p;
+            if(this.Direction == Direction.DOWN) { this.Direction = Direction.UP; }
+            else { this.Direction = Direction.DOWN; }
         }
     }
 }

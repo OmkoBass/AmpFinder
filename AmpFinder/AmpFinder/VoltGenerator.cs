@@ -19,6 +19,16 @@ namespace AmpFinder
             this.Value = value;
             this.Orientation = orientation;
             this.Direction = direction;
+            if (this.Orientation == Orientation.HORIZONTAL)
+            {
+                Size s = new Size(52, 52);
+                this.Size = s;
+            }
+            else
+            {
+                Size s = new Size(52, 52);
+                this.Size = s;
+            }
         }
 
         internal void Draw(Graphics g, int X, int Y)

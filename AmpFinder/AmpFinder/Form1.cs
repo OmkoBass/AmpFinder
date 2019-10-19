@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using QuickGraph;
 
 namespace AmpFinder
 {
@@ -23,6 +22,7 @@ namespace AmpFinder
         public window()
         {
             InitializeComponent();
+            Reset();
         }
 
         private void ResistorToggle_CheckedChanged(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace AmpFinder
                 SetAllFalse(1);
             }
         }
-        
+
         private void AmpGeneratorToggle_CheckedChanged(object sender, EventArgs e)
         {
             if (AmpGeneratorToggle.Checked == true)
@@ -56,6 +56,7 @@ namespace AmpFinder
                 SetAllFalse(3);
             }
         }
+
         private void EditToggle_CheckedChanged(object sender, EventArgs e)
         {
             if(EditToggle.Checked == true)
@@ -63,6 +64,7 @@ namespace AmpFinder
                 SetAllFalse(4);
             }
         }
+
         private void SetAllFalse(int num)
         {
             switch (num)
@@ -100,10 +102,42 @@ namespace AmpFinder
             }
         }
 
-        private void ElementClickLogic(MouseEventArgs e)
+        public void DrawGrid()
         {
-            
+            int i;
+            Pen pen = new Pen(Color.Gray, 1);
+            using(Graphics g = CircuitDraw.CreateGraphics())
+            {
+                for (i = 0; i < this.Width; i += 20)
+                {
+                    g.DrawLine(pen, i, 0, i, this.Height);
+                    g.DrawLine(pen, 0, i, this.Width, i);
+                }
+            }
         }
+
+        private Element IsSomethingThere(MouseEventArgs e)
+        {
+            Point P = FixCooridnates(e.X, e.Y);
+            foreach (Element comp in Components)
+            {
+                if (comp.Coordinates.X < P.X && comp.Coordinates.X + comp.Size.Width > P.X)
+                {
+                    if (comp.Coordinates.X < P.X + comp.Size.Width && comp.Coordinates.X + comp.Size.Width < P.X + comp.Size.Width)
+                    {
+                        if (comp.Coordinates.Y < P.Y && comp.Coordinates.Y + comp.Size.Height > P.Y)
+                        {
+                            if (comp.Coordinates.Y < P.Y + comp.Size.Height && comp.Coordinates.Y + comp.Size.Height < P.Y + comp.Size.Height)
+                            {
+                                return comp;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         private Point FixCooridnates(int X, int Y)
         {
             //if 1163, 254 => 1160 260
@@ -113,100 +147,126 @@ namespace AmpFinder
             return P;
         }
 
-        private void CircuitDraw_Paint(object sender, PaintEventArgs e)
+        private void Reset()
         {
-            int i;
-            Pen pen = new Pen(Color.Gray, 1);
-            for (i = 0; i < this.Width; i += 20)
+            using(Graphics g = CircuitDraw.CreateGraphics())
             {
-                e.Graphics.DrawLine(pen, i, 0, i, this.Height);
-                e.Graphics.DrawLine(pen, 0, i, this.Width, i);
+                g.Clear(Color.White);
+                Components.Clear();
             }
+            DrawGrid();
         }
 
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             Graphics g = CircuitDraw.CreateGraphics();
-            if(ResistorToggle.Checked == true)
+            if (IsSomethingThere(e) != null)
             {
-                if(e.Button == MouseButtons.Left)
+                MessageBox.Show("There's already something there.");
+            }
+            else
+            {
+                if (ResistorToggle.Checked == true)
                 {
-                    Point Fixed = FixCooridnates(e.X, e.Y);   //Fixes the coordinates to corespond to the grid
-                    Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
-                    ResistorCounter++;  //For better naming
-                    Components.Add(R);  //Adds the component to global list
-                    R.Draw(g, Fixed.X, Fixed.Y);   //Draws it
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);   //Fixes the coordinates to corespond to the grid
+                        Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
+                        R.Coordinates = Fixed;
+                        ResistorCounter++;  //For better naming
+                        Components.Add(R);  //Adds the component to global list
+                        R.Draw(g, Fixed.X, Fixed.Y);   //Draws it
+                    }
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
+                        R.Coordinates = Fixed;
+                        ResistorCounter++;
+                        Components.Add(R);
+                        R.Draw(g, Fixed.X, Fixed.Y);
+                    }
                 }
-                else if(e.Button == MouseButtons.Right)
+                else if (CapacitorToggle.Checked == true)
                 {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    Resistor R = new Resistor($"R{ResistorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
-                    ResistorCounter++;
-                    Components.Add(R);
-                    R.Draw(g, Fixed.X, Fixed.Y);
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
+                        C.Coordinates = Fixed;
+                        CapacitorCounter++;
+                        Components.Add(C);
+                        C.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
+                        C.Coordinates = Fixed;
+                        CapacitorCounter++;
+                        Components.Add(C);
+                        C.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                }
+                else if (AmpGeneratorToggle.Checked == true)
+                {
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                        A.Coordinates = Fixed;
+                        AmpGeneratorCounter++;
+                        Components.Add(A);
+                        A.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                        A.Coordinates = Fixed;
+                        AmpGeneratorCounter++;
+                        Components.Add(A);
+                        A.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                }
+                else if (VoltGeneratorToggle.Checked == true)
+                {
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
+                        V.Coordinates = Fixed;
+                        AmpGeneratorCounter++;
+                        Components.Add(V);
+                        V.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        Point Fixed = FixCooridnates(e.X, e.Y);
+                        VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
+                        V.Coordinates = Fixed;
+                        VoltGeneratorCounter++;
+                        Components.Add(V);
+                        V.Draw(g, Fixed.X, Fixed.Y);
+                    }
+                }
+                else if (EditToggle.Checked == true)
+                {
+                    if(IsSomethingThere(e) != null)
+                    {
+
+                    }
+                    else
+                    {
+                        
+                    }
                 }
             }
-            else if(CapacitorToggle.Checked == true)
-            {
-                if(e.Button == MouseButtons.Left)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.HORIZONTAL, Direction.NONE);
-                    CapacitorCounter++;
-                    Components.Add(C);
-                    C.Draw(g, Fixed.X, Fixed.Y);
-                }
-                else if (e.Button == MouseButtons.Right)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    Capacitor C = new Capacitor($"C{CapacitorCounter}", 50, Orientation.VERTICAL, Direction.NONE);
-                    CapacitorCounter++;
-                    Components.Add(C);
-                    C.Draw(g, Fixed.X, Fixed.Y);
-                }
-            }
-            else if(AmpGeneratorToggle.Checked == true)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
-                    AmpGeneratorCounter++;
-                    Components.Add(A);
-                    A.Draw(g, Fixed.X, Fixed.Y);
-                }
-                else if (e.Button == MouseButtons.Right)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    AmpGenerator A = new AmpGenerator($"J{AmpGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
-                    AmpGeneratorCounter++;
-                    Components.Add(A);
-                    A.Draw(g, Fixed.X, Fixed.Y);
-                }
-            }
-            else if (VoltGeneratorToggle.Checked == true)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.HORIZONTAL, Direction.UP);
-                    AmpGeneratorCounter++;
-                    Components.Add(V);
-                    V.Draw(g, Fixed.X, Fixed.Y);
-                }
-                else if (e.Button == MouseButtons.Right)
-                {
-                    Point Fixed = FixCooridnates(e.X, e.Y);
-                    VoltGenerator V = new VoltGenerator($"E{VoltGeneratorCounter}", 50, Orientation.VERTICAL, Direction.UP);
-                    VoltGeneratorCounter++;
-                    Components.Add(V);
-                    V.Draw(g, Fixed.X, Fixed.Y);
-                }
-            }
-            else if (EditToggle.Checked == true)
-            {
-                
-            }
+        }
+
+        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Reset();
         }
     }
 }

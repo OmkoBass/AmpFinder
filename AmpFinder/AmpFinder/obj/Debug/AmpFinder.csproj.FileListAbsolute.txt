@@ -24,14 +24,6 @@ D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\AmpFinder.exe
 D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\AmpFinder.pdb
 D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\MetroFramework.dll
 D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\MetroFramework.Fonts.dll
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Data.dll
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.dll
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Graphviz.dll
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Serialization.dll
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.xml
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Data.xml
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Graphviz.xml
-D:\Git\AmpFinder\AmpFinder\AmpFinder\bin\Debug\QuickGraph.Serialization.xml
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csprojAssemblyReference.cache
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.window.resources
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.Properties.Resources.resources
