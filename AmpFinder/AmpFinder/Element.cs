@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace AmpFinder
 {
     enum Orientation { Horizontal, Vertical }
-    enum Direction { None, Up, Down }
+    enum Direction { None, Up, Down, Left, Right }
     enum Type { Resistor, Capacitor, AmpGenerator, VoltGenerator, None }
     class Element
     {
@@ -21,6 +21,7 @@ namespace AmpFinder
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
 
+        private Pen pen = new Pen(Color.Black, 5);
         public Element()
         {
 
@@ -38,12 +39,12 @@ namespace AmpFinder
                 case Type.Resistor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        Size s = new Size(50, 25);
+                        Size s = new Size(60, 20);
                         this.Size = s;
                     }
                     else
                     {
-                        Size s = new Size(25, 50);
+                        Size s = new Size(20, 60);
                         this.Size = s;
                     }
                     break;
@@ -67,20 +68,19 @@ namespace AmpFinder
             switch(this.Type)
             {
                 case Type.Resistor:
-                    Pen pen = new Pen(Color.Black, 5);
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 50, 25);
+                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
-                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 25, 50);
+                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
                     }
                     break;
                 case Type.Capacitor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        Image capacitor = Image.FromFile("CapacitorHorizontal.png");    //48x48
+                        Image capacitor = Image.FromFile("CapacitorHorizontal.png");
                         g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
                     }
                     else if (this.Orientation == Orientation.Vertical)
@@ -90,27 +90,45 @@ namespace AmpFinder
                     }
                     break;
                 case Type.AmpGenerator:
-                    if (this.Orientation == Orientation.Horizontal)
+                    switch(this.Direction)
                     {
-                        Image AmpGenerator = Image.FromFile("AmpGeneratorHorizontal.png");  //52x52
-                        g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
-                    }
-                    else if (this.Orientation == Orientation.Vertical)
-                    {
-                        Image AmpGenerator = Image.FromFile("AmpGeneratorVertical.png");
-                        g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                        case Direction.Up:
+                            Image AmpGenerator = Image.FromFile("AmpGeneratorUp.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Down:
+                            AmpGenerator = Image.FromFile("AmpGeneratorDown.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Left:
+                            AmpGenerator = Image.FromFile("AmpGeneratorLeft.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Right:
+                            AmpGenerator = Image.FromFile("AmpGeneratorRight.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
                     }
                     break;
                 case Type.VoltGenerator:
-                    if (this.Orientation == Orientation.Horizontal)
+                    switch (this.Direction)
                     {
-                        Image VoltGenerator = Image.FromFile("VoltGeneratorHorizontal.png");    //52x52
-                        g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
-                    }
-                    else if (this.Orientation == Orientation.Vertical)
-                    {
-                        Image VoltGenerator = Image.FromFile("VoltGeneratorVertical.png");
-                        g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
+                        case Direction.Up:
+                            Image AmpGenerator = Image.FromFile("VoltGeneratorUp.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Down:
+                            AmpGenerator = Image.FromFile("VoltGeneratorDown.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Left:
+                            AmpGenerator = Image.FromFile("VoltGeneratorLeft.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
+                        case Direction.Right:
+                            AmpGenerator = Image.FromFile("VoltGeneratorRight.png");
+                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            break;
                     }
                     break;
             }
@@ -122,18 +140,18 @@ namespace AmpFinder
             {
                 case Type.Resistor:
                     Pen pen = new Pen(Color.LightGray, 5);
-                    g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 50, 25);
+                    g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 60, 20);
                     break;
                 case Type.Capacitor:
                     Image capacitor = Image.FromFile("CapacitorHorizontalShadow.png");
                     g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
                     break;
                 case Type.AmpGenerator:
-                    Image AmpGenerator = Image.FromFile("AmpGeneratorHorizontalShadow.png");
+                    Image AmpGenerator = Image.FromFile("AmpGeneratorShadow.png");
                     g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
                     break;
                 case Type.VoltGenerator:
-                    Image VoltGenerator = Image.FromFile("VoltGeneratorHorizontalShadow.png");
+                    Image VoltGenerator = Image.FromFile("VoltGeneratorShadow.png");
                     g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
                     break;
             }
@@ -149,8 +167,21 @@ namespace AmpFinder
 
         internal void SwitchDirection()
         {
-            if(this.Direction == Direction.Down) { this.Direction = Direction.Up; }
-            else { this.Direction = Direction.Down; }
+            switch(this.Direction)
+            {
+                case Direction.Down:
+                    this.Direction = Direction.Left;
+                    break;
+                case Direction.Left:
+                    this.Direction = Direction.Up;
+                    break;
+                case Direction.Up:
+                    this.Direction = Direction.Right;
+                    break;
+                case Direction.Right:
+                    this.Direction = Direction.Down;
+                    break;
+            }
         }
     }
 }

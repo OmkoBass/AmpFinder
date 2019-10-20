@@ -294,6 +294,7 @@
             // 
             // DrawTimer
             // 
+            this.DrawTimer.Interval = 50;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
             // 
             // window
@@ -324,17 +325,12 @@
         #endregion
 
         protected MetroFramework.Controls.MetroPanel ComponentPanel;
-        private MetroFramework.Controls.MetroToggle ResistorToggle;
-        private MetroFramework.Controls.MetroToggle VoltGeneratorToggle;
-        private MetroFramework.Controls.MetroToggle AmpGeneratorToggle;
-        private MetroFramework.Controls.MetroToggle CapacitorToggle;
         private MetroFramework.Controls.MetroLabel voltgen;
         private MetroFramework.Controls.MetroLabel ampgen;
         private MetroFramework.Controls.MetroLabel cap;
         private MetroFramework.Controls.MetroLabel res;
         private System.Windows.Forms.PictureBox CircuitDraw;
         private MetroFramework.Controls.MetroLabel edit;
-        private MetroFramework.Controls.MetroToggle EditToggle;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
@@ -348,6 +344,11 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.Timer DrawTimer;
+        internal MetroFramework.Controls.MetroToggle ResistorToggle;
+        internal MetroFramework.Controls.MetroToggle VoltGeneratorToggle;
+        internal MetroFramework.Controls.MetroToggle AmpGeneratorToggle;
+        internal MetroFramework.Controls.MetroToggle CapacitorToggle;
+        internal MetroFramework.Controls.MetroToggle EditToggle;
     }
 }
 

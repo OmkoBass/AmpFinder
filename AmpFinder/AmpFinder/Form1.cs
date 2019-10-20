@@ -112,7 +112,7 @@ namespace AmpFinder
 
         private Element IsSomethingThere(MouseEventArgs e)
         {
-            Point P = FixCooridnates(e.Location);
+            Point P = e.Location;
             foreach (Element comp in Components)
             {
                 if (comp.Coordinates.X < P.X && comp.Coordinates.X + comp.Size.Width > P.X)
@@ -132,20 +132,21 @@ namespace AmpFinder
             return null;
         }
 
-        private Point FixCooridnates(Point Point)
-        {
-            //if 1163, 254 => 1160 260
-            Point.X += 20 - (Point.X % 20);
-            Point.Y += 20 - (Point.Y % 20);
-            Point P = new Point(Point.X, Point.Y);
-            return P;
-        }
+        //private Point FixCooridnates(Point Point)
+        //{
+        //    //if 1163, 254 => 1160 260
+        //    Point.X += 20 - (Point.X % 20);
+        //    Point.Y += 20 - (Point.Y % 20);
+        //    Point P = new Point(Point.X, Point.Y);
+        //    return P;
+        //}
 
         public void DrawGrid()
         {
             int i;
             Pen pen = new Pen(Color.Gray, 1);
-            using (Graphics g = CircuitDraw.CreateGraphics())
+            Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
+            using (Graphics g = Graphics.FromImage(bm))
             {
                 for (i = 0; i < this.Width; i += 20)
                 {
@@ -153,6 +154,8 @@ namespace AmpFinder
                     g.DrawLine(pen, 0, i, this.Width, i);
                 }
             }
+            CircuitDraw.Image = bm;
+            CircuitDraw.Refresh();
         }
 
         private void Reset()
@@ -230,7 +233,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.Location);   //Fixes the coordinates to corespond to the grid
+                        Point Fixed = /*FixCooridnates*/(e.Location);   //Fixes the coordinates to corespond to the grid
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Horizontal, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;  //For better naming
@@ -238,7 +241,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.Location);
+                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Vertical, Direction.None);
                         R.Coordinates = Fixed;
                         ResistorCounter++;
@@ -249,7 +252,7 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.Location);
+                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Horizontal, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
@@ -257,7 +260,7 @@ namespace AmpFinder
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        Point Fixed = FixCooridnates(e.Location);
+                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Vertical, Direction.None);
                         C.Coordinates = Fixed;
                         CapacitorCounter++;
@@ -268,16 +271,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.Location);
+                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
-                        A.Coordinates = Fixed;
-                        AmpGeneratorCounter++;
-                        Components.Add(A);
-                    }
-                    else if (e.Button == MouseButtons.Right)
-                    {
-                        Point Fixed = FixCooridnates(e.Location);
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
                         A.Coordinates = Fixed;
                         AmpGeneratorCounter++;
                         Components.Add(A);
@@ -287,18 +282,10 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = FixCooridnates(e.Location);
+                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
                         V.Coordinates = Fixed;
                         AmpGeneratorCounter++;
-                        Components.Add(V);
-                    }
-                    else if (e.Button == MouseButtons.Right)
-                    {
-                        Point Fixed = FixCooridnates(e.Location);
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Vertical, Direction.Up);
-                        V.Coordinates = Fixed;
-                        VoltGeneratorCounter++;
                         Components.Add(V);
                     }
                 }
@@ -306,18 +293,17 @@ namespace AmpFinder
                 {
                     if(IsSomethingThere(e) != null)
                     {
-                        Element element = IsSomethingThere(e);
-                        if(element.Type == Type.AmpGenerator)
+                        if(e.Button == MouseButtons.Right)
                         {
-                            Components.Remove(element);
-                            element.SwitchDirection();
-                            Element NewAmpGenerator = new Element(element.Type, element.Name, element.Value, element.Orientation, element.Direction);
-                            NewAmpGenerator.Coordinates = element.Coordinates;
-                            Components.Add(NewAmpGenerator);
+                            Element element = IsSomethingThere(e);
+                            if (element.Type == Type.AmpGenerator || element.Type == Type.VoltGenerator)
+                            {
+                                element.SwitchDirection();
+                            }
                         }
-                        else if(element.Type == Type.VoltGenerator)
+                        else if(e.Button == MouseButtons.Left)
                         {
-
+                            Element element = IsSomethingThere(e);
                         }
                     }
                     else
@@ -337,7 +323,7 @@ namespace AmpFinder
         {
             ClearGrid();
             DrawComponents(Components);
-            DrawShadow(FixCooridnates(CircuitDraw.PointToClient(Cursor.Position)));
+            DrawShadow(/*FixCooridnates*/(CircuitDraw.PointToClient(Cursor.Position)));
             Invalidate();
         }
     }
