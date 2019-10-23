@@ -20,6 +20,7 @@ namespace AmpFinder
         internal Orientation Orientation { get; set; }
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
+        internal Color Color { get; set; }
 
         private Pen pen = new Pen(Color.Black, 5);
         public Element()
@@ -74,7 +75,7 @@ namespace AmpFinder
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
-                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
+                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Height, this.Size.Width);
                     }
                     break;
                 case Type.Capacitor:
@@ -157,14 +158,6 @@ namespace AmpFinder
             }
         }
 
-        internal void Delete(Graphics g)
-        {
-            switch(this.Type)
-            {
-
-            }
-        }
-
         internal void SwitchDirection()
         {
             switch(this.Direction)
@@ -181,6 +174,17 @@ namespace AmpFinder
                 case Direction.Right:
                     this.Direction = Direction.Down;
                     break;
+            }
+        }
+        internal void SwitchOrientation()
+        {
+            if (this.Orientation == Orientation.Horizontal)
+            {
+                this.Orientation = Orientation.Vertical;
+            }
+            else
+            {
+                this.Orientation = Orientation.Horizontal;
             }
         }
     }

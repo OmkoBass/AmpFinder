@@ -18,6 +18,7 @@ namespace AmpFinder
         int CapacitorCounter = 1;
         int AmpGeneratorCounter = 1;
         int VoltGeneratorCounter = 1;
+        public enum Themes { Black, White }
 
         public window()
         {
@@ -132,19 +133,16 @@ namespace AmpFinder
             return null;
         }
 
-        //private Point FixCooridnates(Point Point)
-        //{
-        //    //if 1163, 254 => 1160 260
-        //    Point.X += 20 - (Point.X % 20);
-        //    Point.Y += 20 - (Point.Y % 20);
-        //    Point P = new Point(Point.X, Point.Y);
-        //    return P;
-        //}
-
-        public void DrawGrid()
+        public void DrawGrid(Themes t)
         {
             int i;
             Pen pen = new Pen(Color.Gray, 1);
+            switch (t)
+            {
+                case Themes.Black:
+                    pen.Color = Color.Black;
+                    break;
+            }
             Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
             using (Graphics g = Graphics.FromImage(bm))
             {
@@ -165,7 +163,7 @@ namespace AmpFinder
                 g.Clear(Color.White);
                 Components.Clear();
             }
-            DrawGrid();
+            DrawGrid(Themes.White); ;
         }
 
         private void ClearGrid()
@@ -174,7 +172,7 @@ namespace AmpFinder
             {
                 g.Clear(Color.White);
             }
-            DrawGrid();
+            DrawGrid(Themes.White);
         }
         
         private void DrawComponents(List<Element> list)
@@ -233,36 +231,18 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = /*FixCooridnates*/(e.Location);   //Fixes the coordinates to corespond to the grid
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Horizontal, Direction.None);
-                        R.Coordinates = Fixed;
+                        R.Coordinates = e.Location;
                         ResistorCounter++;  //For better naming
                         Components.Add(R);  //Adds the component to global list
-                    }
-                    else if (e.Button == MouseButtons.Right)
-                    {
-                        Point Fixed = /*FixCooridnates*/(e.Location);
-                        Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Vertical, Direction.None);
-                        R.Coordinates = Fixed;
-                        ResistorCounter++;
-                        Components.Add(R);
                     }
                 }
                 else if (CapacitorToggle.Checked == true)
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = /*FixCooridnates*/(e.Location);
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Horizontal, Direction.None);
-                        C.Coordinates = Fixed;
-                        CapacitorCounter++;
-                        Components.Add(C);
-                    }
-                    else if (e.Button == MouseButtons.Right)
-                    {
-                        Point Fixed = /*FixCooridnates*/(e.Location);
-                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Vertical, Direction.None);
-                        C.Coordinates = Fixed;
+                        C.Coordinates = e.Location;
                         CapacitorCounter++;
                         Components.Add(C);
                     }
@@ -271,9 +251,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = /*FixCooridnates*/(e.Location);
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
-                        A.Coordinates = Fixed;
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Right);
+                        A.Coordinates = e.Location;
                         AmpGeneratorCounter++;
                         Components.Add(A);
                     }
@@ -282,9 +261,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Point Fixed = /*FixCooridnates*/(e.Location);
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Up);
-                        V.Coordinates = Fixed;
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Right);
+                        V.Coordinates = e.Location;
                         AmpGeneratorCounter++;
                         Components.Add(V);
                     }
@@ -299,6 +277,10 @@ namespace AmpFinder
                             if (element.Type == Type.AmpGenerator || element.Type == Type.VoltGenerator)
                             {
                                 element.SwitchDirection();
+                            }
+                            else if(element.Type == Type.Resistor || element.Type == Type.Capacitor)
+                            {
+                                element.SwitchOrientation();
                             }
                         }
                         else if(e.Button == MouseButtons.Left)
@@ -323,8 +305,21 @@ namespace AmpFinder
         {
             ClearGrid();
             DrawComponents(Components);
-            DrawShadow(/*FixCooridnates*/(CircuitDraw.PointToClient(Cursor.Position)));
+            DrawShadow((CircuitDraw.PointToClient(Cursor.Position)));
+
             Invalidate();
+        }
+
+        private void WhiteThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            menuStrip1.BackColor = Color.White;
+            CircuitDraw.BackColor = Color.White;
+        }
+
+        private void BlackThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            menuStrip1.BackColor = Color.DarkGray;
+            CircuitDraw.BackColor = Color.Black;
         }
     }
 }

@@ -51,9 +51,13 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DrawTimer = new System.Windows.Forms.Timer(this.components);
+            this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DrawTimer = new System.Windows.Forms.Timer(this.components);
+            this.whiteThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.blackThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -209,6 +213,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.editToolStripMenuItem,
+            this.themeToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -235,7 +240,7 @@
             this.newToolStripMenuItem1,
             this.loadToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.projectToolStripMenuItem.Text = "Project";
             // 
             // newToolStripMenuItem1
@@ -254,24 +259,24 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save as";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // editToolStripMenuItem
@@ -279,6 +284,20 @@
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // DrawTimer
+            // 
+            this.DrawTimer.Interval = 50;
+            this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
+            // 
+            // themeToolStripMenuItem
+            // 
+            this.themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whiteThemeToolStripMenuItem,
+            this.blackThemeToolStripMenuItem});
+            this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.themeToolStripMenuItem.Text = "Theme";
             // 
             // helpToolStripMenuItem
             // 
@@ -292,10 +311,19 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // DrawTimer
+            // whiteThemeToolStripMenuItem
             // 
-            this.DrawTimer.Interval = 50;
-            this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
+            this.whiteThemeToolStripMenuItem.Name = "whiteThemeToolStripMenuItem";
+            this.whiteThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.whiteThemeToolStripMenuItem.Text = "White Theme";
+            this.whiteThemeToolStripMenuItem.Click += new System.EventHandler(this.WhiteThemeToolStripMenuItem_Click);
+            // 
+            // blackThemeToolStripMenuItem
+            // 
+            this.blackThemeToolStripMenuItem.Name = "blackThemeToolStripMenuItem";
+            this.blackThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.blackThemeToolStripMenuItem.Text = "Black Theme";
+            this.blackThemeToolStripMenuItem.Click += new System.EventHandler(this.BlackThemeToolStripMenuItem_Click);
             // 
             // window
             // 
@@ -339,8 +367,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.Timer DrawTimer;
@@ -349,6 +375,12 @@
         internal MetroFramework.Controls.MetroToggle AmpGeneratorToggle;
         internal MetroFramework.Controls.MetroToggle CapacitorToggle;
         internal MetroFramework.Controls.MetroToggle EditToggle;
+        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem whiteThemeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem blackThemeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private MetroFramework.Components.MetroToolTip metroToolTip1;
     }
 }
 
