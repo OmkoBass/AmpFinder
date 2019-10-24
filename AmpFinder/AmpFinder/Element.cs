@@ -20,8 +20,12 @@ namespace AmpFinder
         internal Orientation Orientation { get; set; }
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
+        internal Color Col { get; set; }
+
+        internal List<Point> Connections = new List<Point>();
 
         private Pen pen = new Pen(Color.Black, 5);
+
         public Element()
         {
 
@@ -70,6 +74,7 @@ namespace AmpFinder
                 case Type.Resistor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
+                        if(this.Col == Color.Red) { pen = new Pen(Color.Red, 5); }
                         g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
                     }
                     else if (this.Orientation == Orientation.Vertical)

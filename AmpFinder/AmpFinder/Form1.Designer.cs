@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ComponentPanel = new MetroFramework.Controls.MetroPanel();
+            this.Connect = new System.Windows.Forms.Button();
             this.edit = new MetroFramework.Controls.MetroLabel();
             this.EditToggle = new MetroFramework.Controls.MetroToggle();
             this.voltgen = new MetroFramework.Controls.MetroLabel();
@@ -45,16 +46,15 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
-            this.Connect = new System.Windows.Forms.Button();
-            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -84,6 +84,15 @@
             this.ComponentPanel.VerticalScrollbarBarColor = true;
             this.ComponentPanel.VerticalScrollbarHighlightOnWheel = false;
             this.ComponentPanel.VerticalScrollbarSize = 8;
+            // 
+            // Connect
+            // 
+            this.Connect.Location = new System.Drawing.Point(0, 587);
+            this.Connect.Name = "Connect";
+            this.Connect.Size = new System.Drawing.Size(56, 67);
+            this.Connect.TabIndex = 12;
+            this.Connect.UseVisualStyleBackColor = true;
+            this.Connect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // edit
             // 
@@ -236,21 +245,38 @@
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.projectToolStripMenuItem.Text = "New";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.ProjectToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveToolStripMenuItem.Text = "Load";
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(109, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "Save";
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem1.Text = "Save as";
+            // 
+            // exitToolStripMenuItem2
+            // 
+            this.exitToolStripMenuItem2.Name = "exitToolStripMenuItem2";
+            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem2.Text = "Exit";
             // 
             // editToolStripMenuItem
             // 
@@ -274,32 +300,6 @@
             // 
             this.DrawTimer.Interval = 50;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
-            // 
-            // Connect
-            // 
-            this.Connect.Location = new System.Drawing.Point(0, 587);
-            this.Connect.Name = "Connect";
-            this.Connect.Size = new System.Drawing.Size(56, 67);
-            this.Connect.TabIndex = 12;
-            this.Connect.UseVisualStyleBackColor = true;
-            this.Connect.Click += new System.EventHandler(this.Connect_Click);
-            // 
-            // exitToolStripMenuItem1
-            // 
-            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem1.Text = "Save as";
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(177, 6);
-            // 
-            // exitToolStripMenuItem2
-            // 
-            this.exitToolStripMenuItem2.Name = "exitToolStripMenuItem2";
-            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem2.Text = "Exit";
             // 
             // window
             // 

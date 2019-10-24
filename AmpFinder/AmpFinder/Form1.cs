@@ -14,7 +14,6 @@ namespace AmpFinder
     public partial class window : Form
     {
         List<Element> Components = new List<Element>(); //List of all components
-        List<Point> Connections = new List<Point>();
         Element selected = null;    //Need this to move an element
         bool moving = false;    //Need this to see if it's moving for moving logic
 
@@ -183,7 +182,6 @@ namespace AmpFinder
             {
                 g.Clear(Color.White);
                 Components.Clear();
-                Connections.Clear();
             }
             SetAllFalse(99);
             DrawGrid();
@@ -232,94 +230,97 @@ namespace AmpFinder
             }
         }
 
-        void DrawConnections(List<Point> points)
+        private void DrawConnections()
         {
-            Pen pen = new Pen(Color.Black, 2);
-            using (Graphics g = CircuitDraw.CreateGraphics())
+            using(Graphics g = CircuitDraw.CreateGraphics())
             {
-                for (int i = 0; i < points.Count - 1; i++)
+                foreach(Element element in Components)
                 {
-                    int k = ++i;
-                    g.DrawLines(pen, points.ToArray());
+                    for(int i = 0; i < element.Connections.Count; i++)
+                    {
+                        g.DrawLine(new Pen(Color.Black, 2), element.Coordinates, element.Connections[i]);
+                    }
                 }
             }
         }
 
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
-            Graphics g = CircuitDraw.CreateGraphics();
-            if (IsSomethingThere(new Point(e.X, e.Y)) != null && EditToggle.Checked == false && !Connect.Focused)
+            using (Graphics g = CircuitDraw.CreateGraphics())
             {
-                MessageBox.Show("There's already something there.");
-            }
-            else
-            {
-                if (ResistorToggle.Checked == true)
+                if (IsSomethingThere(new Point(e.X, e.Y)) != null && EditToggle.Checked == false && !Connect.Focused)
                 {
-                    if (e.Button == MouseButtons.Left)
-                    {
-                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None);
-                        R.Coordinates = e.Location;
-                        Components.Add(R);  //Adds the component to global list
-                    }
+                    MessageBox.Show("There's already something there.");
                 }
-                else if (CapacitorToggle.Checked == true)
+                else
                 {
-                    if (e.Button == MouseButtons.Left)
+                    if (ResistorToggle.Checked == true)
                     {
-                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None);
-                        C.Coordinates = e.Location;
-                        Components.Add(C);
-                    }
-                }
-                else if (AmpGeneratorToggle.Checked == true)
-                {
-                    if (e.Button == MouseButtons.Left)
-                    {
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
-                        A.Coordinates = e.Location;
-                        Components.Add(A);
-                    }
-                }
-                else if (VoltGeneratorToggle.Checked == true)
-                {
-                    if (e.Button == MouseButtons.Left)
-                    {
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
-                        V.Coordinates = e.Location;
-                        Components.Add(V);
-                    }
-                }
-                else if (EditToggle.Checked == true)
-                {
-                    Element element = IsSomethingThere(new Point(e.X, e.Y));
-                    if (element != null)
-                    {
-                        if (e.Button == MouseButtons.Right)
+                        if (e.Button == MouseButtons.Left)
                         {
-                            if (element.Type == Type.AmpGenerator || element.Type == Type.VoltGenerator)
-                            {
-                                element.SwitchDirection();
-                            }
-                            else if (element.Type == Type.Resistor || element.Type == Type.Capacitor)
-                            {
-                                element.SwitchOrientation();
-                            }
-                        }
-                        else if (e.Button == MouseButtons.Left)
-                        {
-                            moving = true;
-                            selected = element;
+                            Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None);
+                            R.Coordinates = e.Location;
+                            Components.Add(R);  //Adds the component to global list
                         }
                     }
-                    else
+                    else if (CapacitorToggle.Checked == true)
                     {
-                        moving = false; //For drag and drop
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None);
+                            C.Coordinates = e.Location;
+                            Components.Add(C);
+                        }
                     }
-                }
-                else if(Connect.Focused)
-                {
-                    Connect_Click(sender, e);
+                    else if (AmpGeneratorToggle.Checked == true)
+                    {
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
+                            A.Coordinates = e.Location;
+                            Components.Add(A);
+                        }
+                    }
+                    else if (VoltGeneratorToggle.Checked == true)
+                    {
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
+                            V.Coordinates = e.Location;
+                            Components.Add(V);
+                        }
+                    }
+                    else if (EditToggle.Checked == true)
+                    {
+                        Element element = IsSomethingThere(new Point(e.X, e.Y));
+                        if (element != null)
+                        {
+                            if (e.Button == MouseButtons.Right)
+                            {
+                                if (element.Type == Type.AmpGenerator || element.Type == Type.VoltGenerator)
+                                {
+                                    element.SwitchDirection();
+                                }
+                                else if (element.Type == Type.Resistor || element.Type == Type.Capacitor)
+                                {
+                                    element.SwitchOrientation();
+                                }
+                            }
+                            else if (e.Button == MouseButtons.Left)
+                            {
+                                moving = true;
+                                selected = element;
+                            }
+                        }
+                        else
+                        {
+                            moving = false; //For drag and drop
+                        }
+                    }
+                    else if (Connect.Focused)
+                    {
+                        Connect_Click(sender, e);
+                    }
                 }
             }
         }
@@ -349,8 +350,8 @@ namespace AmpFinder
                     connectee2 = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
                     if(connectee1 != null && connectee2 != null)
                     {
-                        Connections.Add(connectee1.Coordinates);
-                        Connections.Add(connectee2.Coordinates);
+                        connectee1.Connections.Add(connectee2.Coordinates);
+                        connectee2.Connections.Add(connectee1.Coordinates);
                         connectee1 = null;
                         connectee2 = null;
                     }
@@ -362,8 +363,7 @@ namespace AmpFinder
             ClearGrid();
             DrawComponents(Components);
             DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
-            DrawConnections(Connections);
-
+            DrawConnections();
 
             Invalidate();
         }
