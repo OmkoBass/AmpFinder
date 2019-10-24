@@ -13,11 +13,21 @@ namespace AmpFinder
 {
     public partial class window : Form
     {
-        List<Element> Components = new List<Element>();
+        List<Element> Components = new List<Element>(); //List of all components
+        List<Point> Connections = new List<Point>();
+        Element selected = null;    //Need this to move an element
+        bool moving = false;    //Need this to see if it's moving for moving logic
+
+        Element connectee1 = null;
+        Element connectee2 = null;
+
+        //For better naming
         int ResistorCounter = 1;
         int CapacitorCounter = 1;
         int AmpGeneratorCounter = 1;
         int VoltGeneratorCounter = 1;
+
+
         public window()
         {
             InitializeComponent();
@@ -30,6 +40,10 @@ namespace AmpFinder
               ControlStyles.OptimizedDoubleBuffer |
               ControlStyles.SupportsTransparentBackColor
               , true);
+            this.DoubleBuffered = true;
+
+            Image connect = Image.FromFile("Connector.png");
+            Connect.Image = connect;
         }
 
         private void ResistorToggle_CheckedChanged(object sender, EventArgs e)
@@ -106,6 +120,13 @@ namespace AmpFinder
                     AmpGeneratorToggle.Checked = false;
                     VoltGeneratorToggle.Checked = false;
                     break;
+                default:
+                    ResistorToggle.Checked = false;
+                    CapacitorToggle.Checked = false;
+                    AmpGeneratorToggle.Checked = false;
+                    VoltGeneratorToggle.Checked = false;
+                    EditToggle.Checked = false;
+                    break;
             }
         }
 
@@ -147,22 +168,24 @@ namespace AmpFinder
             CircuitDraw.Refresh();
         }
 
-        private void Reset()
-        {
-            using(Graphics g = CircuitDraw.CreateGraphics())
-            {
-                g.Clear(Color.White);
-                Components.Clear();
-            }
-            DrawGrid();
-        }
-
         private void ClearGrid()
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
                 g.Clear(Color.White);
             }
+            DrawGrid();
+        }
+
+        private void Reset()
+        {
+            using(Graphics g = CircuitDraw.CreateGraphics())
+            {
+                g.Clear(Color.White);
+                Components.Clear();
+                Connections.Clear();
+            }
+            SetAllFalse(99);
             DrawGrid();
         }
         
@@ -209,10 +232,23 @@ namespace AmpFinder
             }
         }
 
+        void DrawConnections(List<Point> points)
+        {
+            Pen pen = new Pen(Color.Black, 2);
+            using (Graphics g = CircuitDraw.CreateGraphics())
+            {
+                for (int i = 0; i < points.Count - 1; i++)
+                {
+                    int k = ++i;
+                    g.DrawLines(pen, points.ToArray());
+                }
+            }
+        }
+
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             Graphics g = CircuitDraw.CreateGraphics();
-            if (IsSomethingThere(new Point(e.X, e.Y)) != null && EditToggle.Checked == false)
+            if (IsSomethingThere(new Point(e.X, e.Y)) != null && EditToggle.Checked == false && !Connect.Focused)
             {
                 MessageBox.Show("There's already something there.");
             }
@@ -257,7 +293,7 @@ namespace AmpFinder
                 else if (EditToggle.Checked == true)
                 {
                     Element element = IsSomethingThere(new Point(e.X, e.Y));
-                    if(element != null)
+                    if (element != null)
                     {
                         if (e.Button == MouseButtons.Right)
                         {
@@ -272,34 +308,69 @@ namespace AmpFinder
                         }
                         else if (e.Button == MouseButtons.Left)
                         {
-
+                            moving = true;
+                            selected = element;
                         }
                     }
+                    else
+                    {
+                        moving = false; //For drag and drop
+                    }
+                }
+                else if(Connect.Focused)
+                {
+                    Connect_Click(sender, e);
                 }
             }
         }
 
-        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void CircuitDraw_MouseMove(object sender, MouseEventArgs e)
         {
-            Reset();
+            if(moving == true)
+            {
+                selected.Coordinates = new Point(e.X, e.Y);
+            }
         }
 
+        private void Connect_Click(object sender, EventArgs e)
+        {
+            SetAllFalse(99);
+            if (connectee1 == null)
+            {
+                if (IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
+                {
+                    connectee1 = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
+                }
+            }
+            else if (connectee2 == null)
+            {
+                if (IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
+                {
+                    connectee2 = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
+                    if(connectee1 != null && connectee2 != null)
+                    {
+                        Connections.Add(connectee1.Coordinates);
+                        Connections.Add(connectee2.Coordinates);
+                        connectee1 = null;
+                        connectee2 = null;
+                    }
+                }
+            }
+        }
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
             ClearGrid();
             DrawComponents(Components);
             DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
+            DrawConnections(Connections);
+
 
             Invalidate();
         }
 
-        private void CircuitDraw_DragDrop(object sender, DragEventArgs e)
+        private void ProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Element element = IsSomethingThere(new Point(e.X, e.Y));
-            if(element != null)
-            {
-                
-            }
+            Reset();
         }
     }
 }
