@@ -20,7 +20,6 @@ namespace AmpFinder
         internal Orientation Orientation { get; set; }
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
-        internal Color Color { get; set; }
 
         private Pen pen = new Pen(Color.Black, 5);
         public Element()

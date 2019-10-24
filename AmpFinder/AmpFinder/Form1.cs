@@ -18,8 +18,6 @@ namespace AmpFinder
         int CapacitorCounter = 1;
         int AmpGeneratorCounter = 1;
         int VoltGeneratorCounter = 1;
-        public enum Themes { Black, White }
-
         public window()
         {
             InitializeComponent();
@@ -111,9 +109,8 @@ namespace AmpFinder
             }
         }
 
-        private Element IsSomethingThere(MouseEventArgs e)
+        private Element IsSomethingThere(Point P)
         {
-            Point P = e.Location;
             foreach (Element comp in Components)
             {
                 if (comp.Coordinates.X < P.X && comp.Coordinates.X + comp.Size.Width > P.X)
@@ -133,16 +130,10 @@ namespace AmpFinder
             return null;
         }
 
-        public void DrawGrid(Themes t)
+        public void DrawGrid()
         {
             int i;
             Pen pen = new Pen(Color.Gray, 1);
-            switch (t)
-            {
-                case Themes.Black:
-                    pen.Color = Color.Black;
-                    break;
-            }
             Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
             using (Graphics g = Graphics.FromImage(bm))
             {
@@ -163,7 +154,7 @@ namespace AmpFinder
                 g.Clear(Color.White);
                 Components.Clear();
             }
-            DrawGrid(Themes.White); ;
+            DrawGrid();
         }
 
         private void ClearGrid()
@@ -172,7 +163,7 @@ namespace AmpFinder
             {
                 g.Clear(Color.White);
             }
-            DrawGrid(Themes.White);
+            DrawGrid();
         }
         
         private void DrawComponents(List<Element> list)
@@ -221,7 +212,7 @@ namespace AmpFinder
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             Graphics g = CircuitDraw.CreateGraphics();
-            if (IsSomethingThere(e) != null && EditToggle.Checked == false)
+            if (IsSomethingThere(new Point(e.X, e.Y)) != null && EditToggle.Checked == false)
             {
                 MessageBox.Show("There's already something there.");
             }
@@ -231,9 +222,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Element R = new Element(Type.Resistor, $"R{ResistorCounter}", 50, Orientation.Horizontal, Direction.None);
+                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None);
                         R.Coordinates = e.Location;
-                        ResistorCounter++;  //For better naming
                         Components.Add(R);  //Adds the component to global list
                     }
                 }
@@ -241,9 +231,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter}", 50, Orientation.Horizontal, Direction.None);
+                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None);
                         C.Coordinates = e.Location;
-                        CapacitorCounter++;
                         Components.Add(C);
                     }
                 }
@@ -251,9 +240,8 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter}", 50, Orientation.Horizontal, Direction.Right);
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
                         A.Coordinates = e.Location;
-                        AmpGeneratorCounter++;
                         Components.Add(A);
                     }
                 }
@@ -261,36 +249,31 @@ namespace AmpFinder
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter}", 50, Orientation.Horizontal, Direction.Right);
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right);
                         V.Coordinates = e.Location;
-                        AmpGeneratorCounter++;
                         Components.Add(V);
                     }
                 }
                 else if (EditToggle.Checked == true)
                 {
-                    if(IsSomethingThere(e) != null)
+                    Element element = IsSomethingThere(new Point(e.X, e.Y));
+                    if(element != null)
                     {
-                        if(e.Button == MouseButtons.Right)
+                        if (e.Button == MouseButtons.Right)
                         {
-                            Element element = IsSomethingThere(e);
                             if (element.Type == Type.AmpGenerator || element.Type == Type.VoltGenerator)
                             {
                                 element.SwitchDirection();
                             }
-                            else if(element.Type == Type.Resistor || element.Type == Type.Capacitor)
+                            else if (element.Type == Type.Resistor || element.Type == Type.Capacitor)
                             {
                                 element.SwitchOrientation();
                             }
                         }
-                        else if(e.Button == MouseButtons.Left)
+                        else if (e.Button == MouseButtons.Left)
                         {
-                            Element element = IsSomethingThere(e);
-                        }
-                    }
-                    else
-                    {
 
+                        }
                     }
                 }
             }
@@ -305,21 +288,18 @@ namespace AmpFinder
         {
             ClearGrid();
             DrawComponents(Components);
-            DrawShadow((CircuitDraw.PointToClient(Cursor.Position)));
+            DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
 
             Invalidate();
         }
 
-        private void WhiteThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CircuitDraw_DragDrop(object sender, DragEventArgs e)
         {
-            menuStrip1.BackColor = Color.White;
-            CircuitDraw.BackColor = Color.White;
-        }
-
-        private void BlackThemeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            menuStrip1.BackColor = Color.DarkGray;
-            CircuitDraw.BackColor = Color.Black;
+            Element element = IsSomethingThere(new Point(e.X, e.Y));
+            if(element != null)
+            {
+                
+            }
         }
     }
 }
