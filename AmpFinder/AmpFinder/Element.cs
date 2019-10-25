@@ -20,9 +20,9 @@ namespace AmpFinder
         internal Orientation Orientation { get; set; }
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
-        internal Color Col { get; set; }
+        internal Color Color { get; set; }
 
-        internal List<Point> Connections = new List<Point>();
+        internal List<Element> Connections = new List<Element>();
 
         private Pen pen = new Pen(Color.Black, 5);
 
@@ -31,13 +31,14 @@ namespace AmpFinder
 
         }
 
-        public Element(Type type, string name, double value, Orientation orientation, Direction direction)
+        public Element(Type type, string name, double value, Orientation orientation, Direction direction, Point coordinates)
         {
             this.Type = type;
             this.Name = name;
             this.Value = value;
             this.Orientation = orientation;
             this.Direction = direction;
+            this.Coordinates = coordinates;
             switch(Type)
             {
                 case Type.Resistor:
@@ -74,7 +75,6 @@ namespace AmpFinder
                 case Type.Resistor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        if(this.Col == Color.Red) { pen = new Pen(Color.Red, 5); }
                         g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
                     }
                     else if (this.Orientation == Orientation.Vertical)
@@ -159,6 +159,14 @@ namespace AmpFinder
                     Image VoltGenerator = Image.FromFile("VoltGeneratorShadow.png");
                     g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
                     break;
+            }
+        }
+        
+        public void DrawConnection(Graphics g)
+        {
+            for(int i = 0; i < this.Connections.Count; i++)
+            {
+                g.DrawLine(new Pen(Color.Black, 2), this.Coordinates, Connections[i].Coordinates);
             }
         }
 

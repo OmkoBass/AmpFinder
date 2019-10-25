@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ComponentPanel = new MetroFramework.Controls.MetroPanel();
-            this.Connect = new System.Windows.Forms.Button();
-            this.edit = new MetroFramework.Controls.MetroLabel();
-            this.EditToggle = new MetroFramework.Controls.MetroToggle();
+            this.btnRotate = new System.Windows.Forms.Button();
+            this.btnCursor = new System.Windows.Forms.Button();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.voltgen = new MetroFramework.Controls.MetroLabel();
             this.ampgen = new MetroFramework.Controls.MetroLabel();
             this.cap = new MetroFramework.Controls.MetroLabel();
@@ -55,6 +55,8 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
+            this.lblName = new MetroFramework.Controls.MetroLabel();
+            this.lblValue = new MetroFramework.Controls.MetroLabel();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -62,9 +64,9 @@
             // 
             // ComponentPanel
             // 
-            this.ComponentPanel.Controls.Add(this.Connect);
-            this.ComponentPanel.Controls.Add(this.edit);
-            this.ComponentPanel.Controls.Add(this.EditToggle);
+            this.ComponentPanel.Controls.Add(this.btnRotate);
+            this.ComponentPanel.Controls.Add(this.btnCursor);
+            this.ComponentPanel.Controls.Add(this.btnConnect);
             this.ComponentPanel.Controls.Add(this.voltgen);
             this.ComponentPanel.Controls.Add(this.ampgen);
             this.ComponentPanel.Controls.Add(this.cap);
@@ -85,36 +87,32 @@
             this.ComponentPanel.VerticalScrollbarHighlightOnWheel = false;
             this.ComponentPanel.VerticalScrollbarSize = 8;
             // 
-            // Connect
+            // btnRotate
             // 
-            this.Connect.Location = new System.Drawing.Point(0, 587);
-            this.Connect.Name = "Connect";
-            this.Connect.Size = new System.Drawing.Size(56, 67);
-            this.Connect.TabIndex = 12;
-            this.Connect.UseVisualStyleBackColor = true;
-            this.Connect.Click += new System.EventHandler(this.Connect_Click);
+            this.btnRotate.Location = new System.Drawing.Point(0, 299);
+            this.btnRotate.Name = "btnRotate";
+            this.btnRotate.Size = new System.Drawing.Size(56, 67);
+            this.btnRotate.TabIndex = 14;
+            this.btnRotate.UseVisualStyleBackColor = true;
+            this.btnRotate.Click += new System.EventHandler(this.BtnRotate_Click);
             // 
-            // edit
+            // btnCursor
             // 
-            this.edit.AutoSize = true;
-            this.edit.Location = new System.Drawing.Point(0, 244);
-            this.edit.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.edit.Name = "edit";
-            this.edit.Size = new System.Drawing.Size(31, 19);
-            this.edit.TabIndex = 10;
-            this.edit.Text = "Edit";
+            this.btnCursor.Location = new System.Drawing.Point(0, 226);
+            this.btnCursor.Name = "btnCursor";
+            this.btnCursor.Size = new System.Drawing.Size(56, 67);
+            this.btnCursor.TabIndex = 13;
+            this.btnCursor.UseVisualStyleBackColor = true;
+            this.btnCursor.Click += new System.EventHandler(this.BtnCursor_Click);
             // 
-            // EditToggle
+            // btnConnect
             // 
-            this.EditToggle.AutoSize = true;
-            this.EditToggle.Location = new System.Drawing.Point(2, 265);
-            this.EditToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.EditToggle.Name = "EditToggle";
-            this.EditToggle.Size = new System.Drawing.Size(80, 17);
-            this.EditToggle.TabIndex = 9;
-            this.EditToggle.Text = "Off";
-            this.EditToggle.UseVisualStyleBackColor = true;
-            this.EditToggle.CheckedChanged += new System.EventHandler(this.EditToggle_CheckedChanged);
+            this.btnConnect.Location = new System.Drawing.Point(54, 226);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(56, 67);
+            this.btnConnect.TabIndex = 12;
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // voltgen
             // 
@@ -225,7 +223,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(898, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -301,19 +299,35 @@
             this.DrawTimer.Interval = 50;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
             // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Location = new System.Drawing.Point(892, 28);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(0, 0);
+            this.lblName.TabIndex = 4;
+            // 
+            // lblValue
+            // 
+            this.lblValue.AutoSize = true;
+            this.lblValue.Location = new System.Drawing.Point(892, 89);
+            this.lblValue.Name = "lblValue";
+            this.lblValue.Size = new System.Drawing.Size(0, 0);
+            this.lblValue.TabIndex = 6;
+            // 
             // window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 691);
+            this.ClientSize = new System.Drawing.Size(984, 691);
+            this.Controls.Add(this.lblValue);
+            this.Controls.Add(this.lblName);
             this.Controls.Add(this.CircuitDraw);
             this.Controls.Add(this.ComponentPanel);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(914, 730);
-            this.MinimumSize = new System.Drawing.Size(914, 730);
             this.Name = "window";
             this.Text = "AmpFinder";
             this.ComponentPanel.ResumeLayout(false);
@@ -334,7 +348,6 @@
         private MetroFramework.Controls.MetroLabel cap;
         private MetroFramework.Controls.MetroLabel res;
         private System.Windows.Forms.PictureBox CircuitDraw;
-        private MetroFramework.Controls.MetroLabel edit;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
@@ -346,14 +359,17 @@
         internal MetroFramework.Controls.MetroToggle VoltGeneratorToggle;
         internal MetroFramework.Controls.MetroToggle AmpGeneratorToggle;
         internal MetroFramework.Controls.MetroToggle CapacitorToggle;
-        internal MetroFramework.Controls.MetroToggle EditToggle;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private MetroFramework.Components.MetroToolTip metroToolTip1;
-        private System.Windows.Forms.Button Connect;
+        private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ToolStripSeparator saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem2;
+        private System.Windows.Forms.Button btnCursor;
+        private System.Windows.Forms.Button btnRotate;
+        private MetroFramework.Controls.MetroLabel lblName;
+        private MetroFramework.Controls.MetroLabel lblValue;
     }
 }
 
