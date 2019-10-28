@@ -22,8 +22,6 @@ namespace AmpFinder
         internal Type Type { get; set; }
         internal Color Color { get; set; }
 
-        internal List<Element> Connections = new List<Element>();
-
         private Pen pen = new Pen(Color.Black, 5);
 
         public Element()
@@ -75,23 +73,25 @@ namespace AmpFinder
                 case Type.Resistor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
-                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Width, this.Size.Height);
+                        Image resistor = Image.FromFile("ResistorHorizontal.png");
+                        g.DrawImage(resistor, this.Coordinates);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
-                        g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, this.Size.Height, this.Size.Width);
+                        Image resistor = Image.FromFile("ResistorVertical.png");
+                        g.DrawImage(resistor, this.Coordinates);
                     }
                     break;
                 case Type.Capacitor:
                     if (this.Orientation == Orientation.Horizontal)
                     {
                         Image capacitor = Image.FromFile("CapacitorHorizontal.png");
-                        g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
+                        g.DrawImage(capacitor, this.Coordinates);
                     }
                     else if (this.Orientation == Orientation.Vertical)
                     {
                         Image capacitor = Image.FromFile("CapacitorVertical.png");
-                        g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
+                        g.DrawImage(capacitor, this.Coordinates);
                     }
                     break;
                 case Type.AmpGenerator:
@@ -99,19 +99,19 @@ namespace AmpFinder
                     {
                         case Direction.Up:
                             Image AmpGenerator = Image.FromFile("AmpGeneratorUp.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Down:
                             AmpGenerator = Image.FromFile("AmpGeneratorDown.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Left:
                             AmpGenerator = Image.FromFile("AmpGeneratorLeft.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Right:
                             AmpGenerator = Image.FromFile("AmpGeneratorRight.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                     }
                     break;
@@ -120,19 +120,19 @@ namespace AmpFinder
                     {
                         case Direction.Up:
                             Image AmpGenerator = Image.FromFile("VoltGeneratorUp.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Down:
                             AmpGenerator = Image.FromFile("VoltGeneratorDown.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Left:
                             AmpGenerator = Image.FromFile("VoltGeneratorLeft.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                         case Direction.Right:
                             AmpGenerator = Image.FromFile("VoltGeneratorRight.png");
-                            g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                            g.DrawImage(AmpGenerator, this.Coordinates);
                             break;
                     }
                     break;
@@ -144,32 +144,24 @@ namespace AmpFinder
             switch (this.Type)
             {
                 case Type.Resistor:
-                    Pen pen = new Pen(Color.LightGray, 5);
-                    g.DrawRectangle(pen, this.Coordinates.X, this.Coordinates.Y, 60, 20);
+                    Image resistor = Image.FromFile("ResistorShadow.png");
+                    g.DrawImage(resistor, this.Coordinates);
                     break;
                 case Type.Capacitor:
                     Image capacitor = Image.FromFile("CapacitorHorizontalShadow.png");
-                    g.DrawImage(capacitor, this.Coordinates.X, this.Coordinates.Y);
+                    g.DrawImage(capacitor, this.Coordinates);
                     break;
                 case Type.AmpGenerator:
                     Image AmpGenerator = Image.FromFile("AmpGeneratorShadow.png");
-                    g.DrawImage(AmpGenerator, this.Coordinates.X, this.Coordinates.Y);
+                    g.DrawImage(AmpGenerator, this.Coordinates);
                     break;
                 case Type.VoltGenerator:
                     Image VoltGenerator = Image.FromFile("VoltGeneratorShadow.png");
-                    g.DrawImage(VoltGenerator, this.Coordinates.X, this.Coordinates.Y);
+                    g.DrawImage(VoltGenerator, this.Coordinates);
                     break;
             }
         }
         
-        public void DrawConnection(Graphics g)
-        {
-            for(int i = 0; i < this.Connections.Count; i++)
-            {
-                g.DrawLine(new Pen(Color.Black, 2), this.Coordinates, Connections[i].Coordinates);
-            }
-        }
-
         internal void SwitchDirection()
         {
             switch(this.Direction)

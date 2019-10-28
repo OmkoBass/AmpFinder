@@ -29,18 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(window));
             this.ComponentPanel = new MetroFramework.Controls.MetroPanel();
             this.btnRotate = new System.Windows.Forms.Button();
             this.btnCursor = new System.Windows.Forms.Button();
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.voltgen = new MetroFramework.Controls.MetroLabel();
-            this.ampgen = new MetroFramework.Controls.MetroLabel();
-            this.cap = new MetroFramework.Controls.MetroLabel();
-            this.res = new MetroFramework.Controls.MetroLabel();
-            this.VoltGeneratorToggle = new MetroFramework.Controls.MetroToggle();
-            this.AmpGeneratorToggle = new MetroFramework.Controls.MetroToggle();
-            this.CapacitorToggle = new MetroFramework.Controls.MetroToggle();
-            this.ResistorToggle = new MetroFramework.Controls.MetroToggle();
             this.CircuitDraw = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +49,10 @@
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.lblName = new MetroFramework.Controls.MetroLabel();
             this.lblValue = new MetroFramework.Controls.MetroLabel();
+            this.btnResistor = new System.Windows.Forms.Button();
+            this.btnCapacitor = new System.Windows.Forms.Button();
+            this.btnAmpGenerator = new System.Windows.Forms.Button();
+            this.btnVoltGenerator = new System.Windows.Forms.Button();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -64,17 +60,12 @@
             // 
             // ComponentPanel
             // 
+            this.ComponentPanel.Controls.Add(this.btnVoltGenerator);
+            this.ComponentPanel.Controls.Add(this.btnAmpGenerator);
+            this.ComponentPanel.Controls.Add(this.btnCapacitor);
+            this.ComponentPanel.Controls.Add(this.btnResistor);
             this.ComponentPanel.Controls.Add(this.btnRotate);
             this.ComponentPanel.Controls.Add(this.btnCursor);
-            this.ComponentPanel.Controls.Add(this.btnConnect);
-            this.ComponentPanel.Controls.Add(this.voltgen);
-            this.ComponentPanel.Controls.Add(this.ampgen);
-            this.ComponentPanel.Controls.Add(this.cap);
-            this.ComponentPanel.Controls.Add(this.res);
-            this.ComponentPanel.Controls.Add(this.VoltGeneratorToggle);
-            this.ComponentPanel.Controls.Add(this.AmpGeneratorToggle);
-            this.ComponentPanel.Controls.Add(this.CapacitorToggle);
-            this.ComponentPanel.Controls.Add(this.ResistorToggle);
             this.ComponentPanel.HorizontalScrollbarBarColor = true;
             this.ComponentPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.ComponentPanel.HorizontalScrollbarSize = 8;
@@ -89,7 +80,8 @@
             // 
             // btnRotate
             // 
-            this.btnRotate.Location = new System.Drawing.Point(0, 299);
+            this.btnRotate.Image = ((System.Drawing.Image)(resources.GetObject("btnRotate.Image")));
+            this.btnRotate.Location = new System.Drawing.Point(54, 0);
             this.btnRotate.Name = "btnRotate";
             this.btnRotate.Size = new System.Drawing.Size(56, 67);
             this.btnRotate.TabIndex = 14;
@@ -98,109 +90,13 @@
             // 
             // btnCursor
             // 
-            this.btnCursor.Location = new System.Drawing.Point(0, 226);
+            this.btnCursor.Image = ((System.Drawing.Image)(resources.GetObject("btnCursor.Image")));
+            this.btnCursor.Location = new System.Drawing.Point(3, 0);
             this.btnCursor.Name = "btnCursor";
             this.btnCursor.Size = new System.Drawing.Size(56, 67);
             this.btnCursor.TabIndex = 13;
             this.btnCursor.UseVisualStyleBackColor = true;
             this.btnCursor.Click += new System.EventHandler(this.BtnCursor_Click);
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(54, 226);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(56, 67);
-            this.btnConnect.TabIndex = 12;
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.Connect_Click);
-            // 
-            // voltgen
-            // 
-            this.voltgen.AutoSize = true;
-            this.voltgen.Location = new System.Drawing.Point(0, 185);
-            this.voltgen.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.voltgen.Name = "voltgen";
-            this.voltgen.Size = new System.Drawing.Size(94, 19);
-            this.voltgen.TabIndex = 8;
-            this.voltgen.Text = "Volt Generator";
-            // 
-            // ampgen
-            // 
-            this.ampgen.AutoSize = true;
-            this.ampgen.Location = new System.Drawing.Point(2, 124);
-            this.ampgen.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.ampgen.Name = "ampgen";
-            this.ampgen.Size = new System.Drawing.Size(101, 19);
-            this.ampgen.TabIndex = 7;
-            this.ampgen.Text = "Amp Generator";
-            // 
-            // cap
-            // 
-            this.cap.AutoSize = true;
-            this.cap.Location = new System.Drawing.Point(2, 63);
-            this.cap.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.cap.Name = "cap";
-            this.cap.Size = new System.Drawing.Size(66, 19);
-            this.cap.TabIndex = 6;
-            this.cap.Text = "Capacitor";
-            // 
-            // res
-            // 
-            this.res.AutoSize = true;
-            this.res.Location = new System.Drawing.Point(2, 2);
-            this.res.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.res.Name = "res";
-            this.res.Size = new System.Drawing.Size(54, 19);
-            this.res.TabIndex = 1;
-            this.res.Text = "Resistor";
-            // 
-            // VoltGeneratorToggle
-            // 
-            this.VoltGeneratorToggle.AutoSize = true;
-            this.VoltGeneratorToggle.Location = new System.Drawing.Point(2, 204);
-            this.VoltGeneratorToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.VoltGeneratorToggle.Name = "VoltGeneratorToggle";
-            this.VoltGeneratorToggle.Size = new System.Drawing.Size(80, 17);
-            this.VoltGeneratorToggle.TabIndex = 5;
-            this.VoltGeneratorToggle.Text = "Off";
-            this.VoltGeneratorToggle.UseVisualStyleBackColor = true;
-            this.VoltGeneratorToggle.CheckedChanged += new System.EventHandler(this.VoltGeneratorToggle_CheckedChanged);
-            // 
-            // AmpGeneratorToggle
-            // 
-            this.AmpGeneratorToggle.AutoSize = true;
-            this.AmpGeneratorToggle.Location = new System.Drawing.Point(2, 143);
-            this.AmpGeneratorToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.AmpGeneratorToggle.Name = "AmpGeneratorToggle";
-            this.AmpGeneratorToggle.Size = new System.Drawing.Size(80, 17);
-            this.AmpGeneratorToggle.TabIndex = 4;
-            this.AmpGeneratorToggle.Text = "Off";
-            this.AmpGeneratorToggle.UseVisualStyleBackColor = true;
-            this.AmpGeneratorToggle.CheckedChanged += new System.EventHandler(this.AmpGeneratorToggle_CheckedChanged);
-            // 
-            // CapacitorToggle
-            // 
-            this.CapacitorToggle.AutoSize = true;
-            this.CapacitorToggle.Location = new System.Drawing.Point(2, 82);
-            this.CapacitorToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.CapacitorToggle.Name = "CapacitorToggle";
-            this.CapacitorToggle.Size = new System.Drawing.Size(80, 17);
-            this.CapacitorToggle.TabIndex = 3;
-            this.CapacitorToggle.Text = "Off";
-            this.CapacitorToggle.UseVisualStyleBackColor = true;
-            this.CapacitorToggle.CheckedChanged += new System.EventHandler(this.CapacitorToggle_CheckedChanged);
-            // 
-            // ResistorToggle
-            // 
-            this.ResistorToggle.AutoSize = true;
-            this.ResistorToggle.Location = new System.Drawing.Point(2, 21);
-            this.ResistorToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.ResistorToggle.Name = "ResistorToggle";
-            this.ResistorToggle.Size = new System.Drawing.Size(80, 17);
-            this.ResistorToggle.TabIndex = 2;
-            this.ResistorToggle.Text = "Off";
-            this.ResistorToggle.UseVisualStyleBackColor = true;
-            this.ResistorToggle.CheckedChanged += new System.EventHandler(this.ResistorToggle_CheckedChanged);
             // 
             // CircuitDraw
             // 
@@ -315,6 +211,43 @@
             this.lblValue.Size = new System.Drawing.Size(0, 0);
             this.lblValue.TabIndex = 6;
             // 
+            // btnResistor
+            // 
+            this.btnResistor.Image = ((System.Drawing.Image)(resources.GetObject("btnResistor.Image")));
+            this.btnResistor.Location = new System.Drawing.Point(2, 214);
+            this.btnResistor.Name = "btnResistor";
+            this.btnResistor.Size = new System.Drawing.Size(56, 67);
+            this.btnResistor.TabIndex = 15;
+            this.btnResistor.UseVisualStyleBackColor = true;
+            // 
+            // btnCapacitor
+            // 
+            this.btnCapacitor.Image = ((System.Drawing.Image)(resources.GetObject("btnCapacitor.Image")));
+            this.btnCapacitor.Location = new System.Drawing.Point(53, 214);
+            this.btnCapacitor.Name = "btnCapacitor";
+            this.btnCapacitor.Size = new System.Drawing.Size(56, 67);
+            this.btnCapacitor.TabIndex = 16;
+            this.btnCapacitor.UseVisualStyleBackColor = true;
+            // 
+            // btnAmpGenerator
+            // 
+            this.btnAmpGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnAmpGenerator.Image")));
+            this.btnAmpGenerator.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAmpGenerator.Location = new System.Drawing.Point(0, 276);
+            this.btnAmpGenerator.Name = "btnAmpGenerator";
+            this.btnAmpGenerator.Size = new System.Drawing.Size(56, 67);
+            this.btnAmpGenerator.TabIndex = 17;
+            this.btnAmpGenerator.UseVisualStyleBackColor = true;
+            // 
+            // btnVoltGenerator
+            // 
+            this.btnVoltGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnVoltGenerator.Image")));
+            this.btnVoltGenerator.Location = new System.Drawing.Point(53, 276);
+            this.btnVoltGenerator.Name = "btnVoltGenerator";
+            this.btnVoltGenerator.Size = new System.Drawing.Size(56, 67);
+            this.btnVoltGenerator.TabIndex = 18;
+            this.btnVoltGenerator.UseVisualStyleBackColor = true;
+            // 
             // window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -331,7 +264,6 @@
             this.Name = "window";
             this.Text = "AmpFinder";
             this.ComponentPanel.ResumeLayout(false);
-            this.ComponentPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -343,10 +275,6 @@
         #endregion
 
         protected MetroFramework.Controls.MetroPanel ComponentPanel;
-        private MetroFramework.Controls.MetroLabel voltgen;
-        private MetroFramework.Controls.MetroLabel ampgen;
-        private MetroFramework.Controls.MetroLabel cap;
-        private MetroFramework.Controls.MetroLabel res;
         private System.Windows.Forms.PictureBox CircuitDraw;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
@@ -355,14 +283,9 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.Timer DrawTimer;
-        internal MetroFramework.Controls.MetroToggle ResistorToggle;
-        internal MetroFramework.Controls.MetroToggle VoltGeneratorToggle;
-        internal MetroFramework.Controls.MetroToggle AmpGeneratorToggle;
-        internal MetroFramework.Controls.MetroToggle CapacitorToggle;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private MetroFramework.Components.MetroToolTip metroToolTip1;
-        private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ToolStripSeparator saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem2;
@@ -370,6 +293,10 @@
         private System.Windows.Forms.Button btnRotate;
         private MetroFramework.Controls.MetroLabel lblName;
         private MetroFramework.Controls.MetroLabel lblValue;
+        private System.Windows.Forms.Button btnVoltGenerator;
+        private System.Windows.Forms.Button btnAmpGenerator;
+        private System.Windows.Forms.Button btnCapacitor;
+        private System.Windows.Forms.Button btnResistor;
     }
 }
 

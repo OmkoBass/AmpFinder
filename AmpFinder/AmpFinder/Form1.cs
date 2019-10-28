@@ -13,12 +13,10 @@ namespace AmpFinder
 {
     public partial class window : Form
     {
-        List<Element> Components = new List<Element>(); //List of all components
+        List<Element> Elements = new List<Element>(); //List of all components
+        List<Wire> Wires = new List<Wire>();
         Element selected = null;    //Need this to move an element
         bool moving = false;    //Need this to see if it's moving for moving logic
-
-        Element connectee1 = null;
-        Element connectee2 = null;
 
         //For better naming
         int ResistorCounter = 1;
@@ -41,97 +39,23 @@ namespace AmpFinder
               , true);
             this.DoubleBuffered = true;
 
-            Image connect = Image.FromFile("Connector.png");
-            Image cursor = Image.FromFile("Cursor.png");
-            Image rotate = Image.FromFile("Rotate.png");
-            btnConnect.Image = connect; btnCursor.Image = cursor;
-            btnRotate.BackgroundImage = rotate; btnRotate.BackgroundImageLayout = ImageLayout.Stretch;
-        }
-
-        private void ResistorToggle_CheckedChanged(object sender, EventArgs e)
-        {
-            if(ResistorToggle.Checked == true)
-            {
-                SetAllFalse(0);
-            }
-        }
-
-        private void CapacitorToggle_CheckedChanged(object sender, EventArgs e)
-        {
-            if(CapacitorToggle.Checked == true)
-            {
-                SetAllFalse(1);
-            }
-        }
-
-        private void AmpGeneratorToggle_CheckedChanged(object sender, EventArgs e)
-        {
-            if (AmpGeneratorToggle.Checked == true)
-            {
-                SetAllFalse(2);
-            }
-        }
-
-        private void VoltGeneratorToggle_CheckedChanged(object sender, EventArgs e)
-        {
-            if (VoltGeneratorToggle.Checked == true)
-            {
-                SetAllFalse(3);
-            }
-        }
-
-        private void SetAllFalse(int num)
-        {
-            switch (num)
-            {
-                case 0:
-                    CapacitorToggle.Checked = false;
-                    AmpGeneratorToggle.Checked = false;
-                    VoltGeneratorToggle.Checked = false;
-                    break;
-                case 1:
-                    ResistorToggle.Checked = false;
-                    AmpGeneratorToggle.Checked = false;
-                    VoltGeneratorToggle.Checked = false;
-                    break;
-                case 2:
-                    ResistorToggle.Checked = false;
-                    CapacitorToggle.Checked = false;
-                    VoltGeneratorToggle.Checked = false;
-                    break;
-                case 3:
-                    ResistorToggle.Checked = false;
-                    CapacitorToggle.Checked = false;
-                    AmpGeneratorToggle.Checked = false;
-                    break;
-                case 4:
-                    ResistorToggle.Checked = false;
-                    CapacitorToggle.Checked = false;
-                    AmpGeneratorToggle.Checked = false;
-                    VoltGeneratorToggle.Checked = false;
-                    break;
-                default:
-                    ResistorToggle.Checked = false;
-                    CapacitorToggle.Checked = false;
-                    AmpGeneratorToggle.Checked = false;
-                    VoltGeneratorToggle.Checked = false;
-                    break;
-            }
+            btnRotate.BackgroundImageLayout = ImageLayout.Stretch;
+            btnAmpGenerator.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private Element IsSomethingThere(Point P)
         {
-            foreach (Element comp in Components)
+            foreach (Element element in Elements)
             {
-                if (comp.Coordinates.X < P.X && comp.Coordinates.X + comp.Size.Width > P.X)
+                if (element.Coordinates.X < P.X && element.Coordinates.X + element.Size.Width > P.X)
                 {
-                    if (comp.Coordinates.X < P.X + comp.Size.Width && comp.Coordinates.X + comp.Size.Width < P.X + comp.Size.Width)
+                    if (element.Coordinates.X < P.X + element.Size.Width && element.Coordinates.X + element.Size.Width < P.X + element.Size.Width)
                     {
-                        if (comp.Coordinates.Y < P.Y && comp.Coordinates.Y + comp.Size.Height > P.Y)
+                        if (element.Coordinates.Y < P.Y && element.Coordinates.Y + element.Size.Height > P.Y)
                         {
-                            if (comp.Coordinates.Y < P.Y + comp.Size.Height && comp.Coordinates.Y + comp.Size.Height < P.Y + comp.Size.Height)
+                            if (element.Coordinates.Y < P.Y + element.Size.Height && element.Coordinates.Y + element.Size.Height < P.Y + element.Size.Height)
                             {
-                                return comp;
+                                return element;
                             }
                         }
                     }
@@ -171,13 +95,12 @@ namespace AmpFinder
             using(Graphics g = CircuitDraw.CreateGraphics())
             {
                 g.Clear(Color.White);
-                Components.Clear();
+                Elements.Clear();
             }
-            SetAllFalse(99);
             //DrawGrid();
         }
         
-        private void DrawComponents(List<Element> list)
+        private void DrawElements(List<Element> list)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
                 foreach (Element element in list)
@@ -190,27 +113,27 @@ namespace AmpFinder
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
-                if (ResistorToggle.Checked == true)
+                if (btnResistor.Focused == true)
                 {
                     Element element = new Element();
                     element.Coordinates = point;
                     element.DummyDraw(g);
                 }
-                else if(CapacitorToggle.Checked == true)
+                else if(btnCapacitor.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.Capacitor;
                     element.Coordinates = point;
                     element.DummyDraw(g);
                 }
-                else if(AmpGeneratorToggle.Checked == true)
+                else if(btnAmpGenerator.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.AmpGenerator;
                     element.Coordinates = point;
                     element.DummyDraw(g);
                 }
-                else if(VoltGeneratorToggle.Checked == true)
+                else if(btnVoltGenerator.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.VoltGenerator;
@@ -220,52 +143,39 @@ namespace AmpFinder
             }
         }
 
-        private void DrawConnections(List<Element> elements)
-        {
-            using(Graphics g = CircuitDraw.CreateGraphics())
-            {
-                foreach (Element element in elements)
-                    element.DrawConnection(g);
-            }
-        }
-
         private void CircuitDraw_MouseClick(object sender, MouseEventArgs e)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
-                if (IsSomethingThere(new Point(e.X, e.Y)) != null && !btnConnect.Focused && !btnCursor.Focused && !btnRotate.Focused)
+                if (IsSomethingThere(new Point(e.X, e.Y)) != null && !btnCursor.Focused && !btnRotate.Focused)
                 {
                     MessageBox.Show("There's already something there.");
                 }
                 else
                 {
-                    if (ResistorToggle.Checked == true)
+                    if (btnResistor.Focused == true)
                     {
                         Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None, e.Location);
-                        Components.Add(R);  //Adds the component to global list
+                        Elements.Add(R);  //Adds the component to global list
                     }
-                    else if (CapacitorToggle.Checked == true)
+                    else if (btnCapacitor.Focused == true)
                     {
                         Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None, e.Location);
-                        Components.Add(C);
+                        Elements.Add(C);
                     }
-                    else if (AmpGeneratorToggle.Checked == true)
+                    else if (btnAmpGenerator.Focused == true)
                     {
                         Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, e.Location);
-                        Components.Add(A);
+                        Elements.Add(A);
                     }
-                    else if (VoltGeneratorToggle.Checked == true)
+                    else if (btnVoltGenerator.Focused == true)
                     {
                         Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, e.Location);
-                        Components.Add(V);
+                        Elements.Add(V);
                     }
                     else if (btnCursor.Focused)
                     {
                         BtnCursor_Click(sender, e);
-                    }
-                    else if (btnConnect.Focused)
-                    {
-                        Connect_Click(sender, e);
                     }
                     else if (btnRotate.Focused)
                     {
@@ -277,38 +187,9 @@ namespace AmpFinder
 
         private void CircuitDraw_MouseMove(object sender, MouseEventArgs e)
         {
-            if(moving == true)
+            if(moving == true && selected != null)
             {
-                if(selected != null)
-                {
                     selected.Coordinates = new Point(e.X, e.Y);
-                }
-            }
-        }
-
-        private void Connect_Click(object sender, EventArgs e)
-        {
-            SetAllFalse(99);
-            if (connectee1 == null)
-            {
-                if (IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
-                {
-                    connectee1 = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
-                }
-            }
-            else if (connectee2 == null)
-            {
-                if (IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
-                {
-                    connectee2 = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
-                    if(connectee1 != null && connectee2 != null)
-                    {
-                        connectee1.Connections.Add(connectee2);
-                        connectee2.Connections.Add(connectee1);
-                        connectee1 = null;
-                        connectee2 = null;
-                    }
-                }
             }
         }
 
@@ -319,7 +200,6 @@ namespace AmpFinder
 
         private void BtnRotate_Click(object sender, EventArgs e)
         {
-            SetAllFalse(99);
             Element element = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
             if(element != null)
             {
@@ -332,30 +212,29 @@ namespace AmpFinder
 
         private void BtnCursor_Click(object sender, EventArgs e)
         {
-            SetAllFalse(99);
             selected = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
             if(selected != null)
             {
-                MouseEventArgs m = (MouseEventArgs)e;
-                if(m.Button == MouseButtons.Right)
-                {
-                    if (selected != null)
-                        moving = true;
-                    else
-                        moving = false;
-                }
-                else if(m.Button == MouseButtons.Left)
+                MouseEventArgs m = e as MouseEventArgs;
+                if(m.Button == MouseButtons.Left)
                 {
                     lblName.Text = selected.Name;
                     lblValue.Text = selected.Value.ToString();
+                    moving = false;
+                }
+                else if(m.Button == MouseButtons.Right)
+                {
+                    if (moving == false)
+                        moving = true;
+                    else 
+                        moving = false;
                 }
             }
         }
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
             ClearGrid();
-            DrawComponents(Components);
-            DrawConnections(Components);
+            DrawElements(Elements);
             DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
 
             Invalidate();
