@@ -21,9 +21,8 @@ namespace AmpFinder
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
         internal Color Color { get; set; }
-
-        private Pen pen = new Pen(Color.Black, 5);
-
+        //internal Connector Left { get; set; }
+        //internal Connector Right { get; set; }
         public Element()
         {
 
@@ -37,19 +36,14 @@ namespace AmpFinder
             this.Orientation = orientation;
             this.Direction = direction;
             this.Coordinates = coordinates;
-            switch(Type)
+
+            switch (Type)
             {
                 case Type.Resistor:
                     if (this.Orientation == Orientation.Horizontal)
-                    {
-                        Size s = new Size(60, 20);
-                        this.Size = s;
-                    }
+                        this.Size = new Size(48, 24);
                     else
-                    {
-                        Size s = new Size(20, 60);
-                        this.Size = s;
-                    }
+                        this.Size = new Size(48, 24);
                     break;
                 case Type.Capacitor:
                     this.Size = new Size(48, 48);

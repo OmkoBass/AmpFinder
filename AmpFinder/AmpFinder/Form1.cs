@@ -14,7 +14,6 @@ namespace AmpFinder
     public partial class window : Form
     {
         List<Element> Elements = new List<Element>(); //List of all components
-        List<Wire> Wires = new List<Wire>();
         Element selected = null;    //Need this to move an element
         bool moving = false;    //Need this to see if it's moving for moving logic
 
@@ -64,22 +63,22 @@ namespace AmpFinder
             return null;
         }
 
-        //public void DrawGrid()
-        //{
-        //    int i;
-        //    Pen pen = new Pen(Color.Gray, 1);
-        //    Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
-        //    using (Graphics g = Graphics.FromImage(bm))
-        //    {
-        //        for (i = 0; i < this.Width; i += 20)
-        //        {
-        //            g.DrawLine(pen, i, 0, i, this.Height);
-        //            g.DrawLine(pen, 0, i, this.Width, i);
-        //        }
-        //    }
-        //    CircuitDraw.Image = bm;
-        //    CircuitDraw.Refresh();
-        //}
+        public void DrawGrid()
+        {
+            int i;
+            Pen pen = new Pen(Color.Gray, 1);
+            Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
+            using (Graphics g = Graphics.FromImage(bm))
+            {
+                for (i = 0; i < this.Width; i += 20)
+                {
+                    g.DrawLine(pen, i, 0, i, this.Height);
+                    g.DrawLine(pen, 0, i, this.Width, i);
+                }
+            }
+            CircuitDraw.Image = bm;
+            CircuitDraw.Refresh();
+        }
 
         private void ClearGrid()
         {
@@ -87,7 +86,6 @@ namespace AmpFinder
             {
                 g.Clear(Color.White);
             }
-            //DrawGrid();
         }
 
         private void Reset()
@@ -97,7 +95,6 @@ namespace AmpFinder
                 g.Clear(Color.White);
                 Elements.Clear();
             }
-            //DrawGrid();
         }
         
         private void DrawElements(List<Element> list)
@@ -116,28 +113,31 @@ namespace AmpFinder
                 if (btnResistor.Focused == true)
                 {
                     Element element = new Element();
-                    element.Coordinates = point;
+                    element.Coordinates = new Point(point.X - (48 / 2), point.Y - (24 / 2));
                     element.DummyDraw(g);
                 }
                 else if(btnCapacitor.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.Capacitor;
-                    element.Coordinates = point;
+                    element.Coordinates = new Point(point.X - (48 / 2), point.Y - (48 / 2));
+
                     element.DummyDraw(g);
                 }
                 else if(btnAmpGenerator.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.AmpGenerator;
-                    element.Coordinates = point;
+                    element.Coordinates = new Point(point.X - (52 / 2), point.Y - (52 / 2));
+
                     element.DummyDraw(g);
                 }
                 else if(btnVoltGenerator.Focused == true)
                 {
                     Element element = new Element();
                     element.Type = Type.VoltGenerator;
-                    element.Coordinates = point;
+                    element.Coordinates = new Point(point.X - (52 / 2), point.Y - (52 / 2));
+
                     element.DummyDraw(g);
                 }
             }
@@ -153,24 +153,29 @@ namespace AmpFinder
                 }
                 else
                 {
+                    //I use point center to center my element, looks better, will be usefull
                     if (btnResistor.Focused == true)
                     {
-                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None, e.Location);
+                        Point Center = new Point(e.Location.X - (48 / 2), e.Location.Y - (24 / 2));
+                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None, Center);
                         Elements.Add(R);  //Adds the component to global list
                     }
                     else if (btnCapacitor.Focused == true)
                     {
-                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None, e.Location);
+                        Point Center = new Point(e.Location.X - (48 / 2), e.Location.Y - (48 / 2));
+                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None, Center);
                         Elements.Add(C);
                     }
                     else if (btnAmpGenerator.Focused == true)
                     {
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, e.Location);
+                        Point Center = new Point(e.Location.X - (52 / 2), e.Location.Y - (52 / 2));
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, Center);
                         Elements.Add(A);
                     }
                     else if (btnVoltGenerator.Focused == true)
                     {
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, e.Location);
+                        Point Center = new Point(e.Location.X - (52 / 2), e.Location.Y - (52 / 2));
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, Center);
                         Elements.Add(V);
                     }
                     else if (btnCursor.Focused)
@@ -189,7 +194,21 @@ namespace AmpFinder
         {
             if(moving == true && selected != null)
             {
-                    selected.Coordinates = new Point(e.X, e.Y);
+                switch (selected.Type)
+                {
+                    case Type.Resistor:
+                        selected.Coordinates = new Point(e.X - (48 / 2), e.Y - (24 / 2));
+                        break;
+                    case Type.Capacitor:
+                        selected.Coordinates = new Point(e.X - (48 / 2), e.Y - (48 / 2));
+                        break;
+                    case Type.VoltGenerator:
+                        selected.Coordinates = new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                        break;
+                    case Type.AmpGenerator:
+                        selected.Coordinates = new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                        break;
+                }
             }
         }
 
@@ -231,9 +250,11 @@ namespace AmpFinder
                 }
             }
         }
+
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
             ClearGrid();
+            DrawGrid();
             DrawElements(Elements);
             DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
 
