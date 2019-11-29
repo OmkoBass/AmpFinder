@@ -59,8 +59,25 @@ namespace AmpFinder
                 if (P.X > element.Coordinates.X && P.X < element.Coordinates.X + element.Size.Width)
                     if (P.Y > element.Coordinates.Y && P.Y < element.Coordinates.Y + element.Size.Height)
                         return element;
+                
             }
             return null;
+        }
+
+        Point CenterElement(Point e, Type type)
+        {
+            switch (type)
+            {
+                case Type.Resistor:
+                    return new Point(e.X - (48 / 2), e.Y - (24 / 2));
+                case Type.Capacitor:
+                    return new Point(e.X - (48 / 2), e.Y - (48 / 2));
+                case Type.AmpGenerator:
+                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                case Type.VoltGenerator:
+                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
+            }
+            return e;
         }
 
         private int Round(int n)
@@ -104,22 +121,6 @@ namespace AmpFinder
                 g.Clear(Color.White);
                 Elements.Clear();
             }
-        }
-
-        Point CenterElement(Point e, Type type)
-        {
-            switch (type)
-            {
-                case Type.Resistor:
-                    return new Point(e.X - (48 / 2), e.Y - (24 / 2));
-                case Type.Capacitor:
-                    return new Point(e.X - (48 / 2), e.Y - (48 / 2));
-                case Type.AmpGenerator:
-                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
-                case Type.VoltGenerator:
-                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
-            }
-            return e;
         }
 
         private void DrawElements(List<Element> list)
@@ -167,7 +168,7 @@ namespace AmpFinder
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
-                if (IsSomethingThere(new Point(e.X, e.Y)) != null && !btnCursor.Focused && !btnRotate.Focused)
+                if (IsSomethingThere(new Point(e.X, e.Y)) != null && !btnCursor.Focused && !btnRotate.Focused && !btnConnect.Focused)
                 {
                     MessageBox.Show("There's already something there.");
                 }
@@ -202,6 +203,10 @@ namespace AmpFinder
                     {
                         BtnRotate_Click(sender, e);
                     }
+                    else if(btnConnect.Focused)
+                    {
+                        BtnConnect_Click(sender, e);
+                    }
                 }
             }
         }
@@ -228,20 +233,15 @@ namespace AmpFinder
             }
         }
 
-        private void ProjectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Reset();
-        }
-
         private void BtnRotate_Click(object sender, EventArgs e)
         {
-            Element element = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
-            if(element != null)
+            selected = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
+            if(selected != null)
             {
-                if (element.Type == Type.Resistor || element.Type == Type.Capacitor)
-                    element.SwitchOrientation();
+                if (selected.Type == Type.Resistor || selected.Type == Type.Capacitor)
+                    selected.SwitchOrientation();
                 else
-                    element.SwitchDirection();
+                    selected.SwitchDirection();
             }
         }
 
@@ -255,6 +255,7 @@ namespace AmpFinder
                 {
                     lblName.Text = selected.Name;
                     lblValue.Text = selected.Value.ToString();
+                    lblElementValue.Text = selected.Value.ToString();
                     moving = false;
                 }
                 else if(m.Button == MouseButtons.Right)
@@ -265,6 +266,42 @@ namespace AmpFinder
                         moving = false;
                 }
             }
+        }
+
+        private void BtnChangeValue_Click(object sender, EventArgs e)
+        {
+            foreach(Element element in Elements)
+            {
+                if (element.Name == selected.Name)
+                    element.Value = int.Parse(lblElementValue.Text);
+            }
+            lblValue.Text = lblElementValue.Text;
+            lblElementValue.Text = null;
+            btnCursor.Focus();
+        }
+
+        private void BtnConnect_Click(object sender, EventArgs e)
+        {
+            //if the selected element is null and we click at a good element
+            if (selected == null && IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
+            {
+                selected = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
+            }
+            else if(selected != null)
+            {
+                if (IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position)) != null)
+                {
+                    Element second = IsSomethingThere(CircuitDraw.PointToClient(Cursor.Position));
+                    //TODO See the position of the element and connec it accordingly 
+                    MessageBox.Show($"{selected.Name} connected to {second.Name}");
+                    selected = null;
+                }
+            }
+        }
+
+        private void ProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reset();
         }
 
         private void DrawTimer_Tick(object sender, EventArgs e)

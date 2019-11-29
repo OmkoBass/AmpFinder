@@ -52,6 +52,9 @@
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
             this.lblName = new MetroFramework.Controls.MetroLabel();
             this.lblValue = new MetroFramework.Controls.MetroLabel();
+            this.lblElementValue = new System.Windows.Forms.TextBox();
+            this.btnChangeValue = new MetroFramework.Controls.MetroButton();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -59,6 +62,7 @@
             // 
             // ComponentPanel
             // 
+            this.ComponentPanel.Controls.Add(this.btnConnect);
             this.ComponentPanel.Controls.Add(this.btnVoltGenerator);
             this.ComponentPanel.Controls.Add(this.btnAmpGenerator);
             this.ComponentPanel.Controls.Add(this.btnCapacitor);
@@ -140,7 +144,7 @@
             this.CircuitDraw.Location = new System.Drawing.Point(126, 26);
             this.CircuitDraw.Margin = new System.Windows.Forms.Padding(2);
             this.CircuitDraw.Name = "CircuitDraw";
-            this.CircuitDraw.Size = new System.Drawing.Size(761, 654);
+            this.CircuitDraw.Size = new System.Drawing.Size(760, 650);
             this.CircuitDraw.TabIndex = 1;
             this.CircuitDraw.TabStop = false;
             this.CircuitDraw.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CircuitDraw_MouseClick);
@@ -247,11 +251,38 @@
             this.lblValue.Size = new System.Drawing.Size(0, 0);
             this.lblValue.TabIndex = 6;
             // 
+            // lblElementValue
+            // 
+            this.lblElementValue.Location = new System.Drawing.Point(892, 129);
+            this.lblElementValue.Name = "lblElementValue";
+            this.lblElementValue.Size = new System.Drawing.Size(80, 20);
+            this.lblElementValue.TabIndex = 7;
+            // 
+            // btnChangeValue
+            // 
+            this.btnChangeValue.Location = new System.Drawing.Point(892, 155);
+            this.btnChangeValue.Name = "btnChangeValue";
+            this.btnChangeValue.Size = new System.Drawing.Size(75, 23);
+            this.btnChangeValue.TabIndex = 8;
+            this.btnChangeValue.Text = "Change";
+            this.btnChangeValue.Click += new System.EventHandler(this.BtnChangeValue_Click);
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(3, 63);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(56, 67);
+            this.btnConnect.TabIndex = 19;
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
+            // 
             // window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 691);
+            this.Controls.Add(this.btnChangeValue);
+            this.Controls.Add(this.lblElementValue);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.CircuitDraw);
@@ -295,6 +326,9 @@
         private System.Windows.Forms.Button btnAmpGenerator;
         private System.Windows.Forms.Button btnCapacitor;
         private System.Windows.Forms.Button btnResistor;
+        private System.Windows.Forms.TextBox lblElementValue;
+        private MetroFramework.Controls.MetroButton btnChangeValue;
+        private System.Windows.Forms.Button btnConnect;
     }
 }
 
