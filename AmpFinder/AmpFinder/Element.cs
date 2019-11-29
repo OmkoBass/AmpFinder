@@ -21,8 +21,8 @@ namespace AmpFinder
         internal Direction Direction { get; set; }
         internal Type Type { get; set; }
         internal Color Color { get; set; }
-        //internal Connector Left { get; set; }
-        //internal Connector Right { get; set; }
+        internal Connector Left { get; set; }
+        internal Connector Right { get; set; }
         public Element()
         {
 
@@ -36,6 +36,8 @@ namespace AmpFinder
             this.Orientation = orientation;
             this.Direction = direction;
             this.Coordinates = coordinates;
+            this.Left = new Connector(this, this.Coordinates);
+            this.Right = new Connector(this, this.Coordinates);
 
             switch (Type)
             {
@@ -131,6 +133,8 @@ namespace AmpFinder
                     }
                     break;
             }
+            this.Left.Draw(g);
+            this.Left.Draw(g);
         }
 
         public void DummyDraw(Graphics g)
@@ -162,15 +166,19 @@ namespace AmpFinder
             {
                 case Direction.Down:
                     this.Direction = Direction.Left;
+                    this.Orientation = Orientation.Horizontal;
                     break;
                 case Direction.Left:
                     this.Direction = Direction.Up;
+                    this.Orientation = Orientation.Vertical;
                     break;
                 case Direction.Up:
                     this.Direction = Direction.Right;
+                    this.Orientation = Orientation.Horizontal;
                     break;
                 case Direction.Right:
                     this.Direction = Direction.Down;
+                    this.Orientation = Orientation.Vertical;
                     break;
             }
         }
@@ -179,10 +187,12 @@ namespace AmpFinder
             if (this.Orientation == Orientation.Horizontal)
             {
                 this.Orientation = Orientation.Vertical;
+                this.Size = new Size(this.Size.Height, this.Size.Width);
             }
             else
             {
                 this.Orientation = Orientation.Horizontal;
+                this.Size = new Size(this.Size.Height, this.Size.Width);
             }
         }
     }

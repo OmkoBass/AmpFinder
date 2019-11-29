@@ -31,6 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(window));
             this.ComponentPanel = new MetroFramework.Controls.MetroPanel();
+            this.btnVoltGenerator = new System.Windows.Forms.Button();
+            this.btnAmpGenerator = new System.Windows.Forms.Button();
+            this.btnCapacitor = new System.Windows.Forms.Button();
+            this.btnResistor = new System.Windows.Forms.Button();
             this.btnRotate = new System.Windows.Forms.Button();
             this.btnCursor = new System.Windows.Forms.Button();
             this.CircuitDraw = new System.Windows.Forms.PictureBox();
@@ -46,13 +50,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
-            this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.lblName = new MetroFramework.Controls.MetroLabel();
             this.lblValue = new MetroFramework.Controls.MetroLabel();
-            this.btnResistor = new System.Windows.Forms.Button();
-            this.btnCapacitor = new System.Windows.Forms.Button();
-            this.btnAmpGenerator = new System.Windows.Forms.Button();
-            this.btnVoltGenerator = new System.Windows.Forms.Button();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -77,6 +76,43 @@
             this.ComponentPanel.VerticalScrollbarBarColor = true;
             this.ComponentPanel.VerticalScrollbarHighlightOnWheel = false;
             this.ComponentPanel.VerticalScrollbarSize = 8;
+            // 
+            // btnVoltGenerator
+            // 
+            this.btnVoltGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnVoltGenerator.Image")));
+            this.btnVoltGenerator.Location = new System.Drawing.Point(53, 276);
+            this.btnVoltGenerator.Name = "btnVoltGenerator";
+            this.btnVoltGenerator.Size = new System.Drawing.Size(56, 67);
+            this.btnVoltGenerator.TabIndex = 18;
+            this.btnVoltGenerator.UseVisualStyleBackColor = true;
+            // 
+            // btnAmpGenerator
+            // 
+            this.btnAmpGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnAmpGenerator.Image")));
+            this.btnAmpGenerator.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAmpGenerator.Location = new System.Drawing.Point(0, 276);
+            this.btnAmpGenerator.Name = "btnAmpGenerator";
+            this.btnAmpGenerator.Size = new System.Drawing.Size(56, 67);
+            this.btnAmpGenerator.TabIndex = 17;
+            this.btnAmpGenerator.UseVisualStyleBackColor = true;
+            // 
+            // btnCapacitor
+            // 
+            this.btnCapacitor.Image = ((System.Drawing.Image)(resources.GetObject("btnCapacitor.Image")));
+            this.btnCapacitor.Location = new System.Drawing.Point(53, 214);
+            this.btnCapacitor.Name = "btnCapacitor";
+            this.btnCapacitor.Size = new System.Drawing.Size(56, 67);
+            this.btnCapacitor.TabIndex = 16;
+            this.btnCapacitor.UseVisualStyleBackColor = true;
+            // 
+            // btnResistor
+            // 
+            this.btnResistor.Image = ((System.Drawing.Image)(resources.GetObject("btnResistor.Image")));
+            this.btnResistor.Location = new System.Drawing.Point(2, 214);
+            this.btnResistor.Name = "btnResistor";
+            this.btnResistor.Size = new System.Drawing.Size(56, 67);
+            this.btnResistor.TabIndex = 15;
+            this.btnResistor.UseVisualStyleBackColor = true;
             // 
             // btnRotate
             // 
@@ -119,7 +155,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 27);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -133,66 +169,66 @@
             this.exitToolStripMenuItem1,
             this.exitToolStripMenuItem2});
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(70, 23);
             this.newToolStripMenuItem.Text = "Project";
             // 
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
             this.projectToolStripMenuItem.Text = "New";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.ProjectToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
             this.saveToolStripMenuItem.Text = "Load";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(109, 6);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(124, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
             this.exitToolStripMenuItem.Text = "Save";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(127, 24);
             this.exitToolStripMenuItem1.Text = "Save as";
             // 
             // exitToolStripMenuItem2
             // 
             this.exitToolStripMenuItem2.Name = "exitToolStripMenuItem2";
-            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(127, 24);
             this.exitToolStripMenuItem2.Text = "Exit";
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(56, 23);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // DrawTimer
             // 
-            this.DrawTimer.Interval = 50;
+            this.DrawTimer.Interval = 60;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_Tick);
             // 
             // lblName
@@ -210,43 +246,6 @@
             this.lblValue.Name = "lblValue";
             this.lblValue.Size = new System.Drawing.Size(0, 0);
             this.lblValue.TabIndex = 6;
-            // 
-            // btnResistor
-            // 
-            this.btnResistor.Image = ((System.Drawing.Image)(resources.GetObject("btnResistor.Image")));
-            this.btnResistor.Location = new System.Drawing.Point(2, 214);
-            this.btnResistor.Name = "btnResistor";
-            this.btnResistor.Size = new System.Drawing.Size(56, 67);
-            this.btnResistor.TabIndex = 15;
-            this.btnResistor.UseVisualStyleBackColor = true;
-            // 
-            // btnCapacitor
-            // 
-            this.btnCapacitor.Image = ((System.Drawing.Image)(resources.GetObject("btnCapacitor.Image")));
-            this.btnCapacitor.Location = new System.Drawing.Point(53, 214);
-            this.btnCapacitor.Name = "btnCapacitor";
-            this.btnCapacitor.Size = new System.Drawing.Size(56, 67);
-            this.btnCapacitor.TabIndex = 16;
-            this.btnCapacitor.UseVisualStyleBackColor = true;
-            // 
-            // btnAmpGenerator
-            // 
-            this.btnAmpGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnAmpGenerator.Image")));
-            this.btnAmpGenerator.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAmpGenerator.Location = new System.Drawing.Point(0, 276);
-            this.btnAmpGenerator.Name = "btnAmpGenerator";
-            this.btnAmpGenerator.Size = new System.Drawing.Size(56, 67);
-            this.btnAmpGenerator.TabIndex = 17;
-            this.btnAmpGenerator.UseVisualStyleBackColor = true;
-            // 
-            // btnVoltGenerator
-            // 
-            this.btnVoltGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnVoltGenerator.Image")));
-            this.btnVoltGenerator.Location = new System.Drawing.Point(53, 276);
-            this.btnVoltGenerator.Name = "btnVoltGenerator";
-            this.btnVoltGenerator.Size = new System.Drawing.Size(56, 67);
-            this.btnVoltGenerator.TabIndex = 18;
-            this.btnVoltGenerator.UseVisualStyleBackColor = true;
             // 
             // window
             // 
@@ -285,7 +284,6 @@
         private System.Windows.Forms.Timer DrawTimer;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private MetroFramework.Components.MetroToolTip metroToolTip1;
         private System.Windows.Forms.ToolStripSeparator saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem2;

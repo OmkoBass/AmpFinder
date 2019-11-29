@@ -29,51 +29,60 @@ namespace AmpFinder
             InitializeComponent();
 
             DrawTimer.Start();
-            this.SetStyle(ControlStyles.UserPaint |
-              ControlStyles.AllPaintingInWmPaint |
-              ControlStyles.ResizeRedraw |
-              ControlStyles.ContainerControl |
-              ControlStyles.OptimizedDoubleBuffer |
-              ControlStyles.SupportsTransparentBackColor
-              , true);
-            this.DoubleBuffered = true;
-
-            btnRotate.BackgroundImageLayout = ImageLayout.Stretch;
-            btnAmpGenerator.BackgroundImageLayout = ImageLayout.Stretch;
         }
+
+        //private Element IsSomethingThere(Point P)
+        //{
+        //    foreach (Element element in Elements)
+        //    {
+        //        if (element.Coordinates.X < P.X && element.Coordinates.X + element.Size.Width > P.X)
+        //        {
+        //            if (element.Coordinates.X < P.X + element.Size.Width && element.Coordinates.X + element.Size.Width < P.X + element.Size.Width)
+        //            {
+        //                if (element.Coordinates.Y < P.Y && element.Coordinates.Y + element.Size.Height > P.Y)
+        //                {
+        //                    if (element.Coordinates.Y < P.Y + element.Size.Height && element.Coordinates.Y + element.Size.Height < P.Y + element.Size.Height)
+        //                    {
+        //                        return element;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
 
         private Element IsSomethingThere(Point P)
         {
             foreach (Element element in Elements)
             {
-                if (element.Coordinates.X < P.X && element.Coordinates.X + element.Size.Width > P.X)
-                {
-                    if (element.Coordinates.X < P.X + element.Size.Width && element.Coordinates.X + element.Size.Width < P.X + element.Size.Width)
-                    {
-                        if (element.Coordinates.Y < P.Y && element.Coordinates.Y + element.Size.Height > P.Y)
-                        {
-                            if (element.Coordinates.Y < P.Y + element.Size.Height && element.Coordinates.Y + element.Size.Height < P.Y + element.Size.Height)
-                            {
-                                return element;
-                            }
-                        }
-                    }
-                }
+                if (P.X > element.Coordinates.X && P.X < element.Coordinates.X + element.Size.Width)
+                    if (P.Y > element.Coordinates.Y && P.Y < element.Coordinates.Y + element.Size.Height)
+                        return element;
             }
             return null;
         }
 
+        private int Round(int n)
+        {
+            int x = (n / 20) * 20;
+
+            int y = (n + 20);
+
+            if (n - x > n - y)
+                return y;
+            return x;
+        }
+
         public void DrawGrid()
         {
-            int i;
-            Pen pen = new Pen(Color.Gray, 1);
             Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
             using (Graphics g = Graphics.FromImage(bm))
             {
-                for (i = 0; i < this.Width; i += 20)
+                for (int i = 0; i < this.Width; i += 20)
                 {
-                    g.DrawLine(pen, i, 0, i, this.Height);
-                    g.DrawLine(pen, 0, i, this.Width, i);
+                    g.DrawLine(new Pen(Color.Gray, 1), i, 0, i, this.Height);
+                    g.DrawLine(new Pen(Color.Gray, 1), 0, i, this.Width, i);
                 }
             }
             CircuitDraw.Image = bm;
@@ -96,47 +105,58 @@ namespace AmpFinder
                 Elements.Clear();
             }
         }
-        
+
+        Point CenterElement(Point e, Type type)
+        {
+            switch (type)
+            {
+                case Type.Resistor:
+                    return new Point(e.X - (48 / 2), e.Y - (24 / 2));
+                case Type.Capacitor:
+                    return new Point(e.X - (48 / 2), e.Y - (48 / 2));
+                case Type.AmpGenerator:
+                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                case Type.VoltGenerator:
+                    return new Point(e.X - (52 / 2), e.Y - (52 / 2));
+            }
+            return e;
+        }
+
         private void DrawElements(List<Element> list)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
                 foreach (Element element in list)
-                {
                     element.Draw(g);
-                }
         }
 
         private void DrawShadow(Point point)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
+                Element element = new Element();
                 if (btnResistor.Focused == true)
                 {
-                    Element element = new Element();
-                    element.Coordinates = new Point(point.X - (48 / 2), point.Y - (24 / 2));
+                    element.Coordinates = CenterElement(point, Type.Resistor);
                     element.DummyDraw(g);
                 }
                 else if(btnCapacitor.Focused == true)
                 {
-                    Element element = new Element();
                     element.Type = Type.Capacitor;
-                    element.Coordinates = new Point(point.X - (48 / 2), point.Y - (48 / 2));
+                    element.Coordinates = CenterElement(point, Type.Capacitor);
 
                     element.DummyDraw(g);
                 }
                 else if(btnAmpGenerator.Focused == true)
                 {
-                    Element element = new Element();
                     element.Type = Type.AmpGenerator;
-                    element.Coordinates = new Point(point.X - (52 / 2), point.Y - (52 / 2));
+                    element.Coordinates = CenterElement(point, Type.AmpGenerator);
 
                     element.DummyDraw(g);
                 }
                 else if(btnVoltGenerator.Focused == true)
                 {
-                    Element element = new Element();
                     element.Type = Type.VoltGenerator;
-                    element.Coordinates = new Point(point.X - (52 / 2), point.Y - (52 / 2));
+                    element.Coordinates = CenterElement(point, Type.VoltGenerator);
 
                     element.DummyDraw(g);
                 }
@@ -153,29 +173,25 @@ namespace AmpFinder
                 }
                 else
                 {
-                    //I use point center to center my element, looks better, will be usefull
                     if (btnResistor.Focused == true)
                     {
-                        Point Center = new Point(e.Location.X - (48 / 2), e.Location.Y - (24 / 2));
-                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None, Center);
+                        Element R = new Element(Type.Resistor, $"R{ResistorCounter++}", 50, Orientation.Horizontal, Direction.None, CenterElement(e.Location, Type.Resistor));
                         Elements.Add(R);  //Adds the component to global list
                     }
                     else if (btnCapacitor.Focused == true)
                     {
-                        Point Center = new Point(e.Location.X - (48 / 2), e.Location.Y - (48 / 2));
-                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None, Center);
+                        Element C = new Element(Type.Capacitor, $"C{CapacitorCounter++}", 50, Orientation.Horizontal, Direction.None, CenterElement(e.Location, Type.Capacitor));
                         Elements.Add(C);
                     }
                     else if (btnAmpGenerator.Focused == true)
                     {
-                        Point Center = new Point(e.Location.X - (52 / 2), e.Location.Y - (52 / 2));
-                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, Center);
+                        Element A = new Element(Type.AmpGenerator, $"J{AmpGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, CenterElement(e.Location, Type.AmpGenerator));
                         Elements.Add(A);
                     }
                     else if (btnVoltGenerator.Focused == true)
                     {
                         Point Center = new Point(e.Location.X - (52 / 2), e.Location.Y - (52 / 2));
-                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, Center);
+                        Element V = new Element(Type.VoltGenerator, $"E{VoltGeneratorCounter++}", 50, Orientation.Horizontal, Direction.Right, CenterElement(e.Location, Type.VoltGenerator));
                         Elements.Add(V);
                     }
                     else if (btnCursor.Focused)
@@ -197,16 +213,16 @@ namespace AmpFinder
                 switch (selected.Type)
                 {
                     case Type.Resistor:
-                        selected.Coordinates = new Point(e.X - (48 / 2), e.Y - (24 / 2));
+                        selected.Coordinates = CenterElement(e.Location, Type.Resistor);
                         break;
                     case Type.Capacitor:
-                        selected.Coordinates = new Point(e.X - (48 / 2), e.Y - (48 / 2));
+                        selected.Coordinates = CenterElement(e.Location, Type.Capacitor);
                         break;
                     case Type.VoltGenerator:
-                        selected.Coordinates = new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                        selected.Coordinates = CenterElement(e.Location, Type.AmpGenerator);
                         break;
                     case Type.AmpGenerator:
-                        selected.Coordinates = new Point(e.X - (52 / 2), e.Y - (52 / 2));
+                        selected.Coordinates = CenterElement(e.Location, Type.VoltGenerator);
                         break;
                 }
             }
