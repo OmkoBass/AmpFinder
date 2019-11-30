@@ -32,3 +32,15 @@ D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csproj.CoreCompileInput
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csproj.CopyComplete
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.exe
 D:\Git\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.pdb
+F:\AmpFinder\AmpFinder\AmpFinder\bin\Debug\AmpFinder.exe.config
+F:\AmpFinder\AmpFinder\AmpFinder\bin\Debug\AmpFinder.exe
+F:\AmpFinder\AmpFinder\AmpFinder\bin\Debug\AmpFinder.pdb
+F:\AmpFinder\AmpFinder\AmpFinder\bin\Debug\MetroFramework.dll
+F:\AmpFinder\AmpFinder\AmpFinder\bin\Debug\MetroFramework.Fonts.dll
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csprojAssemblyReference.cache
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.window.resources
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.Properties.Resources.resources
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csproj.GenerateResource.cache
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.csproj.CopyComplete
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.exe
+F:\AmpFinder\AmpFinder\AmpFinder\obj\Debug\AmpFinder.pdb

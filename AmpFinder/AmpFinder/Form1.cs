@@ -16,6 +16,9 @@ namespace AmpFinder
         List<Element> Elements = new List<Element>(); //List of all components
         Element selected = null;    //Need this to move an element
         bool moving = false;    //Need this to see if it's moving for moving logic
+        bool ChangesMade = true; // Needed for the inital grid drawing
+        Point MouseLastLocation = new Point(0, 0); // Needed for steps for updating shadow ?
+        bool DrawnOnce = false; // Another one for updating shadow :( - Tells us if we've drawn shadow once and didn't go out of the given bounds - else we need to draw new shadow
 
         //For better naming
         int ResistorCounter = 1;
@@ -29,7 +32,10 @@ namespace AmpFinder
             InitializeComponent();
 
             DrawTimer.Start();
+            DrawGrid();
+            ChangesMade = false;
         }
+
 
         //private Element IsSomethingThere(Point P)
         //{
@@ -93,6 +99,9 @@ namespace AmpFinder
 
         public void DrawGrid()
         {
+            if (!ChangesMade)
+                return; 
+
             Bitmap bm = new Bitmap(CircuitDraw.Width, CircuitDraw.Height);
             using (Graphics g = Graphics.FromImage(bm))
             {
@@ -108,6 +117,9 @@ namespace AmpFinder
 
         private void ClearGrid()
         {
+            if (!ChangesMade)
+                return;
+
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
                 g.Clear(Color.White);
@@ -128,12 +140,24 @@ namespace AmpFinder
             using (Graphics g = CircuitDraw.CreateGraphics())
                 foreach (Element element in list)
                     element.Draw(g);
+            ChangesMade = false;
         }
 
-        private void DrawShadow(Point point)
+        private void DrawShadow(Point point, bool UndoChangesMade)
         {
             using (Graphics g = CircuitDraw.CreateGraphics())
             {
+                if (((btnAmpGenerator.Focused || btnAmpGenerator.Focused || btnCapacitor.Focused || btnResistor.Focused) && !UndoChangesMade) == true)
+                    ChangesMade = true;
+                   
+                if (UndoChangesMade)
+                {
+                    ClearGrid();
+                    DrawGrid();
+                    DrawElements(Elements);
+                    DrawnOnce = true;
+                }
+
                 Element element = new Element();
                 if (btnResistor.Focused == true)
                 {
@@ -161,6 +185,8 @@ namespace AmpFinder
 
                     element.DummyDraw(g);
                 }
+
+                
             }
         }
 
@@ -208,8 +234,11 @@ namespace AmpFinder
                         BtnConnect_Click(sender, e);
                     }
                 }
+
+                ChangesMade = true;
             }
         }
+
 
         private void CircuitDraw_MouseMove(object sender, MouseEventArgs e)
         {
@@ -230,6 +259,17 @@ namespace AmpFinder
                         selected.Coordinates = CenterElement(e.Location, Type.VoltGenerator);
                         break;
                 }
+            }
+
+            if (Math.Abs(MouseLastLocation.X - e.Location.X) > 20 || Math.Abs(MouseLastLocation.Y - e.Location.Y) > 10)
+            {
+                MouseLastLocation = e.Location;
+                DrawShadow(CircuitDraw.PointToClient(Cursor.Position), false);
+                DrawnOnce = false;
+            } 
+            else if (!DrawnOnce)
+            {
+                DrawShadow(CircuitDraw.PointToClient(Cursor.Position), true);
             }
         }
 
@@ -272,7 +312,7 @@ namespace AmpFinder
         {
             foreach(Element element in Elements)
             {
-                if (element.Name == selected.Name)
+                if (element.Name == selected?.Name)
                     element.Value = int.Parse(lblElementValue.Text);
             }
             lblValue.Text = lblElementValue.Text;
@@ -309,7 +349,6 @@ namespace AmpFinder
             ClearGrid();
             DrawGrid();
             DrawElements(Elements);
-            DrawShadow(CircuitDraw.PointToClient(Cursor.Position));
 
             Invalidate();
         }

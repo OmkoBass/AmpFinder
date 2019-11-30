@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(window));
             this.ComponentPanel = new MetroFramework.Controls.MetroPanel();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.btnVoltGenerator = new System.Windows.Forms.Button();
             this.btnAmpGenerator = new System.Windows.Forms.Button();
             this.btnCapacitor = new System.Windows.Forms.Button();
@@ -54,7 +55,6 @@
             this.lblValue = new MetroFramework.Controls.MetroLabel();
             this.lblElementValue = new System.Windows.Forms.TextBox();
             this.btnChangeValue = new MetroFramework.Controls.MetroButton();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.ComponentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CircuitDraw)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -75,16 +75,25 @@
             this.ComponentPanel.Location = new System.Drawing.Point(11, 26);
             this.ComponentPanel.Margin = new System.Windows.Forms.Padding(2);
             this.ComponentPanel.Name = "ComponentPanel";
-            this.ComponentPanel.Size = new System.Drawing.Size(109, 654);
+            this.ComponentPanel.Size = new System.Drawing.Size(139, 654);
             this.ComponentPanel.TabIndex = 0;
             this.ComponentPanel.VerticalScrollbarBarColor = true;
             this.ComponentPanel.VerticalScrollbarHighlightOnWheel = false;
             this.ComponentPanel.VerticalScrollbarSize = 8;
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(8, 73);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(61, 67);
+            this.btnConnect.TabIndex = 19;
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
+            // 
             // btnVoltGenerator
             // 
             this.btnVoltGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnVoltGenerator.Image")));
-            this.btnVoltGenerator.Location = new System.Drawing.Point(53, 276);
+            this.btnVoltGenerator.Location = new System.Drawing.Point(78, 287);
             this.btnVoltGenerator.Name = "btnVoltGenerator";
             this.btnVoltGenerator.Size = new System.Drawing.Size(56, 67);
             this.btnVoltGenerator.TabIndex = 18;
@@ -94,16 +103,16 @@
             // 
             this.btnAmpGenerator.Image = ((System.Drawing.Image)(resources.GetObject("btnAmpGenerator.Image")));
             this.btnAmpGenerator.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAmpGenerator.Location = new System.Drawing.Point(0, 276);
+            this.btnAmpGenerator.Location = new System.Drawing.Point(8, 287);
             this.btnAmpGenerator.Name = "btnAmpGenerator";
-            this.btnAmpGenerator.Size = new System.Drawing.Size(56, 67);
+            this.btnAmpGenerator.Size = new System.Drawing.Size(64, 67);
             this.btnAmpGenerator.TabIndex = 17;
             this.btnAmpGenerator.UseVisualStyleBackColor = true;
             // 
             // btnCapacitor
             // 
             this.btnCapacitor.Image = ((System.Drawing.Image)(resources.GetObject("btnCapacitor.Image")));
-            this.btnCapacitor.Location = new System.Drawing.Point(53, 214);
+            this.btnCapacitor.Location = new System.Drawing.Point(78, 214);
             this.btnCapacitor.Name = "btnCapacitor";
             this.btnCapacitor.Size = new System.Drawing.Size(56, 67);
             this.btnCapacitor.TabIndex = 16;
@@ -112,18 +121,18 @@
             // btnResistor
             // 
             this.btnResistor.Image = ((System.Drawing.Image)(resources.GetObject("btnResistor.Image")));
-            this.btnResistor.Location = new System.Drawing.Point(2, 214);
+            this.btnResistor.Location = new System.Drawing.Point(8, 214);
             this.btnResistor.Name = "btnResistor";
-            this.btnResistor.Size = new System.Drawing.Size(56, 67);
+            this.btnResistor.Size = new System.Drawing.Size(64, 67);
             this.btnResistor.TabIndex = 15;
             this.btnResistor.UseVisualStyleBackColor = true;
             // 
             // btnRotate
             // 
             this.btnRotate.Image = ((System.Drawing.Image)(resources.GetObject("btnRotate.Image")));
-            this.btnRotate.Location = new System.Drawing.Point(54, 0);
+            this.btnRotate.Location = new System.Drawing.Point(72, 0);
             this.btnRotate.Name = "btnRotate";
-            this.btnRotate.Size = new System.Drawing.Size(56, 67);
+            this.btnRotate.Size = new System.Drawing.Size(62, 67);
             this.btnRotate.TabIndex = 14;
             this.btnRotate.UseVisualStyleBackColor = true;
             this.btnRotate.Click += new System.EventHandler(this.BtnRotate_Click);
@@ -131,9 +140,9 @@
             // btnCursor
             // 
             this.btnCursor.Image = ((System.Drawing.Image)(resources.GetObject("btnCursor.Image")));
-            this.btnCursor.Location = new System.Drawing.Point(3, 0);
+            this.btnCursor.Location = new System.Drawing.Point(8, 0);
             this.btnCursor.Name = "btnCursor";
-            this.btnCursor.Size = new System.Drawing.Size(56, 67);
+            this.btnCursor.Size = new System.Drawing.Size(61, 67);
             this.btnCursor.TabIndex = 13;
             this.btnCursor.UseVisualStyleBackColor = true;
             this.btnCursor.Click += new System.EventHandler(this.BtnCursor_Click);
@@ -141,10 +150,10 @@
             // CircuitDraw
             // 
             this.CircuitDraw.BackColor = System.Drawing.Color.White;
-            this.CircuitDraw.Location = new System.Drawing.Point(126, 26);
+            this.CircuitDraw.Location = new System.Drawing.Point(154, 26);
             this.CircuitDraw.Margin = new System.Windows.Forms.Padding(2);
             this.CircuitDraw.Name = "CircuitDraw";
-            this.CircuitDraw.Size = new System.Drawing.Size(760, 650);
+            this.CircuitDraw.Size = new System.Drawing.Size(732, 650);
             this.CircuitDraw.TabIndex = 1;
             this.CircuitDraw.TabStop = false;
             this.CircuitDraw.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CircuitDraw_MouseClick);
@@ -159,7 +168,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(984, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -173,61 +182,61 @@
             this.exitToolStripMenuItem1,
             this.exitToolStripMenuItem2});
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(70, 23);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.newToolStripMenuItem.Text = "Project";
             // 
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.projectToolStripMenuItem.Text = "New";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.ProjectToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveToolStripMenuItem.Text = "Load";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(124, 6);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(109, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(127, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "Save";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(127, 24);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem1.Text = "Save as";
             // 
             // exitToolStripMenuItem2
             // 
             this.exitToolStripMenuItem2.Name = "exitToolStripMenuItem2";
-            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(127, 24);
+            this.exitToolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem2.Text = "Exit";
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(56, 23);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // DrawTimer
@@ -266,15 +275,6 @@
             this.btnChangeValue.TabIndex = 8;
             this.btnChangeValue.Text = "Change";
             this.btnChangeValue.Click += new System.EventHandler(this.BtnChangeValue_Click);
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(3, 63);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(56, 67);
-            this.btnConnect.TabIndex = 19;
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // window
             // 
